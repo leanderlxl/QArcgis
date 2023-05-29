@@ -16,8 +16,8 @@ public:
     // str is the summarization of last conten;
     void addDivider(QString str);
 private:
-    QGraphicsView view;
-    QGraphicsScene scene;
+    QGraphicsView *view;
+    QGraphicsScene *scene;
     int rear = 5;
     int lastRear = 0;
 };

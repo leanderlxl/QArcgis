@@ -3,12 +3,15 @@
 #include<QLabel>
 tabWidget::tabWidget(QWidget* parent):QWidget(parent)
 {
-    view.setScene(&this->scene);
+    view = new QGraphicsView(this);
+    scene = new QGraphicsScene();
+    view->setScene(this->scene);
 }
 void tabWidget::addItem(pixmapItem *p)
 {
-    p->setPos(rear,0);
-    scene.addItem(p);
+
+    scene->addItem(p);
+    p->setPos(100,50);
     qDebug()<<" widget menubar tabwidget tabWidget:: add item";
 }
 void tabWidget::addDivider(QString str)

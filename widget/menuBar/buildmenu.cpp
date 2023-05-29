@@ -12,18 +12,18 @@ void buildMenu::build()
 tabWidget* buildMenu::makeTabMap()
 {
     tabWidget* map = new tabWidget(this->ptr_menu);
-    QPixmap    incon_BaseMap(":/TabWidget/pictures/baseMap.png");
-    pixmapItem baseMap(incon_BaseMap);
-    map->addItem(&baseMap);
-    map->addDivider("layers");
+    QPixmap    incon_BaseMap(":/pictures/baseMap.png");
+    pixmapItem *baseMap= new pixmapItem(incon_BaseMap);
+    map->addItem(baseMap);
+    //map->addDivider("layers");
     return map;
 }
 tabWidget* buildMenu::makeTabInsert()
 {
     tabWidget* map = new tabWidget(this->ptr_menu);
-    QPixmap    incon_BaseMap(":/TabWidget/pictures/baseMap.png");
-    pixmapItem baseMap(incon_BaseMap);
-    map->addItem(&baseMap);
+    QPixmap    incon_BaseMap(":/pictures/baseMap.png");
+    pixmapItem *baseMap = new pixmapItem(incon_BaseMap);
+    map->addItem(baseMap);
     map->addDivider("layers");
     return map;
 }

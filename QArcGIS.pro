@@ -16,16 +16,17 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    core/mapobject.cpp \
     main.cpp \
     widget/Client.cpp \
     widget/menuBar/TabWidget/pixmapitem.cpp \
     widget/menuBar/TabWidget/tabwidget.cpp \
-    widget/menuBar/TabWidget/tmp.cpp \
     widget/menuBar/buildmenu.cpp \
     widget/menuBar/menubar.cpp
 
 
 HEADERS += \
+    core/mapobject.h \
     widget/Client.h \
     widget/menuBar/TabWidget/pixmapitem.h \
     widget/menuBar/TabWidget/tabwidget.h \

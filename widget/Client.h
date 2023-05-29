@@ -23,6 +23,5 @@ public:
 private:
     menuBar* menu;
     buildMenu *builder_menu;
-
 };
 #endif // WIDGET_H
