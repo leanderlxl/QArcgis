@@ -16,13 +16,27 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    Client.cpp \
-    main.cpp
+    main.cpp \
+    widget/Client.cpp \
+    widget/menuBar/TabWidget/pixmapitem.cpp \
+    widget/menuBar/TabWidget/tabwidget.cpp \
+    widget/menuBar/TabWidget/tmp.cpp \
+    widget/menuBar/buildmenu.cpp \
+    widget/menuBar/menubar.cpp
+
 
 HEADERS += \
-    Client.h
+    widget/Client.h \
+    widget/menuBar/TabWidget/pixmapitem.h \
+    widget/menuBar/TabWidget/tabwidget.h \
+    widget/menuBar/buildmenu.h \
+    widget/menuBar/menubar.h
+
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    widget/menuBar/TabWidget/menuBar.qrc
