@@ -12,8 +12,10 @@ public:
     //overrride the hover event
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+    void mousePressEvent(QGraphicsSceneMouseEvent *event);
 private:
     bool isHoverd = false;
+    QGraphicsRectItem* hoverMask;
 signals:
 
 };
