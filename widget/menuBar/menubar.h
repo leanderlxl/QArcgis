@@ -13,6 +13,7 @@ public:
 private:
     menuBar() = default;
     menuBar(QWidget *parent = nullptr);
+    ~menuBar();
     static menuBar *singleton;
 };
 

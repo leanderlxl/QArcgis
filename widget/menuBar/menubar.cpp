@@ -5,6 +5,11 @@ menuBar::menuBar(QWidget *parent):QTabWidget(parent)
 {
     qDebug()<<"widget/menubar/ menuBar::menuBar constructed";
 }
+menuBar::~menuBar()
+{
+    delete this->singleton;
+    singleton = nullptr;
+}
 menuBar* menuBar::makeMenuBar(QWidget *parent)
 {
     if(singleton == nullptr)
