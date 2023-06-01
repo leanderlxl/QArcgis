@@ -4,29 +4,44 @@ layerManager* layerManager::singleton = nullptr;
 
 layerManager* layerManager::makeLayerManager()
 {
-    if(this->singleton == nullptr)
+    if( singleton == nullptr)
     {
-        this->singleton = new layerManager();
-        return this->singleton;
+        singleton = new layerManager();
+        return singleton;
     }
     else
     {
         qDebug()<<"don't fucking do this";
-        return this->singleton;
+        return singleton;
     }
+}
+
+QVector<mapObject*> layerManager::getData()
+{
+    QVector<mapObject*> data;
+    for (int i = 0; i < this->layers.size(); ++i) {
+        auto layer = layers[i];
+        auto tmp = layer.getData();
+        data.append(tmp);
+    }
+    return data;
 }
 
 void Layer::setZvalue(int z)
 {
-   for(int i = 0;i<this->container.size();++i)
-   {
-       auto tmp = container[1];
-       tmp->acceptDrops();
-       tmp->setZValue(z);
-   }
+    for(int i = 0;i<this->container.size();++i)
+    {
+        auto tmp = container[1];
+        tmp->acceptDrops();
+        tmp->setZValue(z);
+    }
 }
 
 mapObject::mapObject()
+{
+
+}
+Point::Point()
 {
 
 }
