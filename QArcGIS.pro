@@ -16,9 +16,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    ThreadPool/baseMapTasks/wmts_map.cpp \
     core/mapobject.cpp \
     main.cpp \
     widget/Client.cpp \
+    widget/mapViewer/graphicsView/mapscene2d.cpp \
+    widget/mapViewer/mapviewwidget.cpp \
     widget/menuBar/TabWidget/pixmapitem.cpp \
     widget/menuBar/TabWidget/tabwidget.cpp \
     widget/menuBar/buildmenu.cpp \
@@ -26,18 +29,27 @@ SOURCES += \
 
 
 HEADERS += \
+    ThreadPool/baseMapTasks/wmts_map.h \
     core/mapobject.h \
     widget/Client.h \
+    widget/mapViewer/graphicsView/mapscene2d.h \
+    widget/mapViewer/mapviewwidget.h \
     widget/menuBar/TabWidget/pixmapitem.h \
     widget/menuBar/TabWidget/tabwidget.h \
     widget/menuBar/buildmenu.h \
     widget/menuBar/menubar.h
 
-
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+INCLUDEPATH += D:/QtProject/QArcGIS/lib/gdal/include
+LIBS += -LD:/QtProject/QArcGIS/lib/gdal/lib -lgdal_i
+
+
 
 RESOURCES += \
     widget/menuBar/TabWidget/menuBar.qrc
+
+
+
