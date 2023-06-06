@@ -31,6 +31,7 @@ private:
     qreal x;
     qreal y;
 };
+
 //abstract type of all shapes
 class mapObject:public QGraphicsItem
 {

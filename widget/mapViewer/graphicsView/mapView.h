@@ -5,6 +5,7 @@
 #include<QWidget>
 #include<QWheelEvent>
 #include"mapscene.h"
+#include"ViewState/statemanager.h"
 class mapView2D:public QGraphicsView
 {
 public:
@@ -17,9 +18,11 @@ protected:
     void mouseMoveEvent(QMouseEvent *event);
 
     void mouseReleaseEvent(QMouseEvent *event) ;
-
+private:
+    void setRequiredSettings();
 private:
     bool isPanning;  // 是否正在平移
     QPoint lastPos;  // 上次鼠标位置
+    SelectionStateManager* selection;
 };
 #endif // MAPSCENE2D_H

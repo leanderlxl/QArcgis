@@ -13,7 +13,6 @@
 
 //mapViewer
 #include"mapViewer/mapviewwidget.h"
-
 class Client : public QWidget
 {
     Q_OBJECT

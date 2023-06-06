@@ -22,6 +22,8 @@ SOURCES += \
     core/shapes.cpp \
     main.cpp \
     widget/Client.cpp \
+    widget/mapViewer/graphicsView/ViewState/selectstate.cpp \
+    widget/mapViewer/graphicsView/ViewState/statemanager.cpp \
     widget/mapViewer/graphicsView/mapView.cpp \
     widget/mapViewer/graphicsView/mapscene.cpp \
     widget/mapViewer/mapviewwidget.cpp \
@@ -37,6 +39,8 @@ HEADERS += \
     core/layer.h \
     core/shapes.h \
     widget/Client.h \
+    widget/mapViewer/graphicsView/ViewState/selectstate.h \
+    widget/mapViewer/graphicsView/ViewState/statemanager.h \
     widget/mapViewer/graphicsView/mapView.h \
     widget/mapViewer/graphicsView/mapscene.h \
     widget/mapViewer/mapviewwidget.h \
@@ -49,6 +53,7 @@ HEADERS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
 INCLUDEPATH += D:/QtProject/QArcGIS/lib/gdal/include
 LIBS += -LD:/QtProject/QArcGIS/lib/gdal/lib -lgdal_i
 

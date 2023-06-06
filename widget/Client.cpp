@@ -28,9 +28,6 @@ void Client::initClientFacade()
     delete builder_menu;
     builder_menu = nullptr;
 
-
-
-
 }
 Client::~Client()
 {
