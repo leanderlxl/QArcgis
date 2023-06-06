@@ -11,6 +11,10 @@ void Client::initClientFacade()
     this->setMinimumSize(500,500);
     this->resize(1350,725);
 
+    //the map view
+    map = new mapViewWidget(this);
+
+
     //set menuBar
     menu = menu->makeMenuBar(this);
     if(menu != nullptr)menu->setGeometry(0,0,1350,150);
@@ -24,8 +28,7 @@ void Client::initClientFacade()
     delete builder_menu;
     builder_menu = nullptr;
 
-    //the map view
-    map = new mapViewWidget(this);
+
 
 
 }

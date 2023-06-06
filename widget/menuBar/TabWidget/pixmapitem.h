@@ -4,8 +4,10 @@
 #include <QWidget>
 #include<QGraphicsPixmapItem>
 #include<QObject>
-class pixmapItem:public QGraphicsPixmapItem
+
+class pixmapItem: public QObject,public QGraphicsPixmapItem
 {
+    Q_OBJECT
 public:
     pixmapItem() = default;
     pixmapItem(const QPixmap &pixmap, QGraphicsItem *parent = nullptr);
@@ -17,8 +19,8 @@ public:
 private:
     bool isHoverd = false;
     QGraphicsRectItem* hoverMask;
-//signals:
-//    void clicked( );
+signals:
+    void clicked( );
 };
 
 #endif // PIXMAPITEM_H

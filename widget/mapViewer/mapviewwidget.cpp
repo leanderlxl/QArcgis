@@ -4,6 +4,7 @@ mapViewWidget::mapViewWidget(QWidget *parent) : QWidget(parent)
 {
     this->setGeometry(230,155,1120,570);
     this->initMapView();
+
 }
 void mapViewWidget::initMapView()
 {
@@ -26,5 +27,5 @@ void mapViewWidget::initMapView()
 }
 void mapViewWidget::select()
 {
-    qDebug()<<"successfully connected";
+
 }

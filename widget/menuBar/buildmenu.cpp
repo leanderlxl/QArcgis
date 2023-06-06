@@ -50,22 +50,18 @@ void buildMenu::makeTabEdit(mapViewWidget* map)
     rear = createLayers->pixmap().width()+2;
 
 
-    qDebug()<<"rear "<<rear;
-
     Edit->addItem(select);
     select->setPos(rear+2,0);
     rear += select->pixmap().width()+2;
-    //QObject::connect(select,&pixmapItem::clicked,map,&mapViewWidget::select);
+    QObject::connect(select,&pixmapItem::clicked,map,&mapViewWidget::select);
 
     Edit->addItem(edit_);
     edit_->setPos(rear+2,0);
-    rear += edit_->pixmap().width()+2;Edit->addItem(edit_);
-    qDebug()<<"rear "<<rear;
+    rear += edit_->pixmap().width()+2;
 
     Edit->addItem(createFeatures);
     createFeatures->setPos(rear+2,0);
     rear += createFeatures->pixmap().width()+2;
-    qDebug()<<"rear "<<rear;
 
     this->ptr_menu->addTabWidget(Edit,"Edit");
 
