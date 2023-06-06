@@ -29,7 +29,8 @@ void pixmapItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     if(event->button() == Qt::LeftButton)
     {
-        //qDebug()<<"left btn triggered";
+        qDebug()<<"left btn triggered";
+//        emit clicked();
     }
 
 }

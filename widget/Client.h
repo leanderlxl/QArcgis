@@ -11,6 +11,8 @@
 //menuBar this is
 #include"menuBar/menubar.h"
 
+//mapViewer
+#include"mapViewer/mapviewwidget.h"
 
 class Client : public QWidget
 {
@@ -20,8 +22,10 @@ public:
     Client(QWidget *parent = nullptr);
     ~Client();
     void initClientFacade();
+
 private:
     menuBar* menu;
     buildMenu *builder_menu;
+    mapViewWidget* map;
 };
-#endif // WIDGET_H
+#endif // WIDGET_H21

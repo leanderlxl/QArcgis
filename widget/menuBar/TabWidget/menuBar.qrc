@@ -1,5 +1,9 @@
 <RCC>
     <qresource prefix="/">
         <file>pictures/baseMap.png</file>
+        <file>pictures/createFeatures.png</file>
+        <file>pictures/edit.png</file>
+        <file>pictures/select.png</file>
+        <file>pictures/toolbox.png</file>
     </qresource>
 </RCC>

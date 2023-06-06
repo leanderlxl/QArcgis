@@ -3,9 +3,9 @@
 #include<QString>
 #include<QVector>
 #include<QGraphicsItem>
-#include<QQueue>
 #include<QBrush>
 #include<QMap>
+#include<QPainter>
 //avoid polution to the outter namespace
 //the namespace of core including needed enumeration for this part
 namespace coreEnum {
@@ -15,53 +15,23 @@ enum layerType
     multiPoint,
     polyLine,
     polyGon,
+    baseMap,
     null
 };
 }
-//forward declration
-class Layer;
-class mapObject;
-class Point;
-
-class layerManager
-{
-    static layerManager* makeLayerManager();
-    QVector<mapObject*> getData();
-    void setLayerOrder(QQueue<QString> layerOrder);
-private:
-    QVector<Layer> layers;
-    static layerManager* singleton;
-};
-
-class Layer
+class Point
 {
 public:
-    Layer() = default;
-    Layer(coreEnum::layerType type,QString layerName,QVector<mapObject*> data)
-    {
-        this->type = type;
-        this->layerName = layerName;
-        this->container = data;
-    }
+    Point() = default;
+    Point(qreal x,qreal y);
 public:
-    //set every zValue of layerItem
-    void setZvalue(int z);
-    int getZvalue(){return zValue;}
-
-    //setter for layername
-    void setLayerName(QString name){layerName = name;}
-    QString getLayerName(){return   layerName;}
-
-    QVector<mapObject*> getData(){return container;}
-
+    double length(){ return 0;}
+    double area(){ return 0;}
 private:
-    int zValue = 0;
-    QString layerName = "undefined";
-    coreEnum::layerType type = coreEnum::null;
-    QVector<mapObject*> container;
-
+    qreal x;
+    qreal y;
 };
-
+//abstract type of all shapes
 class mapObject:public QGraphicsItem
 {
 public:
@@ -71,8 +41,6 @@ public:
     virtual double area() = 0;
 
     virtual double length() = 0;
-
-
 
     void setTopLeftPos(QPointF);
 
@@ -112,7 +80,7 @@ public:
     //virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
 
-private:
+protected:
     QVector<Point> points;
     int objectId;
     QColor fillColor;
@@ -137,14 +105,5 @@ private:
     QVector<double>  Marray;
 };
 
-class Point
-{
-public:
-    Point();
-public:
-    double length(){ return 0;}
-    double area(){ return 0;}
-
-};
 
 #endif // MAPOBJECT_H

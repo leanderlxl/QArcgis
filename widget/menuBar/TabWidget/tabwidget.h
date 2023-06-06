@@ -10,7 +10,6 @@ class tabWidget:public QWidget
 {
     Q_OBJECT
 public:
-    tabWidget() = default;
     tabWidget(QWidget* parent = nullptr);
     void addItem(pixmapItem*);
     // str is the summarization of last conten;

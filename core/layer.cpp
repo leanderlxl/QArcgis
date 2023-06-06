@@ -1,5 +1,5 @@
-#include "mapobject.h"
-#include<QDebug>
+#include "layer.h"
+#include<qdebug.h>
 layerManager* layerManager::singleton = nullptr;
 
 layerManager* layerManager::makeLayerManager()
@@ -35,13 +35,4 @@ void Layer::setZvalue(int z)
         tmp->acceptDrops();
         tmp->setZValue(z);
     }
-}
-
-mapObject::mapObject()
-{
-
-}
-Point::Point()
-{
-
 }

@@ -1,5 +1,4 @@
 #include "Client.h"
-
 Client::Client(QWidget *parent)
     : QWidget(parent)
 {
@@ -17,14 +16,21 @@ void Client::initClientFacade()
     if(menu != nullptr)menu->setGeometry(0,0,1350,150);
 
     builder_menu = new buildMenu(menu);
-    builder_menu->build();
+
+    builder_menu->makeTabMap();
+
+    builder_menu->makeTabEdit(map);
 
     delete builder_menu;
     builder_menu = nullptr;
+
+    //the map view
+    map = new mapViewWidget(this);
 
 
 }
 Client::~Client()
 {
+
 }
 

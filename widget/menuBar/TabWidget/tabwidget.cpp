@@ -1,18 +1,20 @@
 #include "tabwidget.h"
 #include<QDebug>
 #include<QLabel>
+#include<QVBoxLayout>
 tabWidget::tabWidget(QWidget* parent):QWidget(parent)
 {
     view = new QGraphicsView(this);
     scene = new QGraphicsScene();
     view->setScene(this->scene);
+    view->setSceneRect(0,0,parent->width(),parent->height());
 }
 void tabWidget::addItem(pixmapItem *p)
 {
 
     scene->addItem(p);
     p->setPos(100,50);
-    qDebug()<<" widget menubar tabwidget tabWidget:: add item";
+    //qDebug()<<" widget menubar tabwidget tabWidget:: add item";
 }
 void tabWidget::addDivider(QString str)
 {

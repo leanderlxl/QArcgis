@@ -17,10 +17,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     ThreadPool/baseMapTasks/wmts_map.cpp \
-    core/mapobject.cpp \
+    core/AbstractShapeType.cpp \
+    core/layer.cpp \
+    core/shapes.cpp \
     main.cpp \
     widget/Client.cpp \
-    widget/mapViewer/graphicsView/mapscene2d.cpp \
+    widget/mapViewer/graphicsView/mapView.cpp \
+    widget/mapViewer/graphicsView/mapscene.cpp \
     widget/mapViewer/mapviewwidget.cpp \
     widget/menuBar/TabWidget/pixmapitem.cpp \
     widget/menuBar/TabWidget/tabwidget.cpp \
@@ -30,9 +33,12 @@ SOURCES += \
 
 HEADERS += \
     ThreadPool/baseMapTasks/wmts_map.h \
-    core/mapobject.h \
+    core/AbstractShapeType.h \
+    core/layer.h \
+    core/shapes.h \
     widget/Client.h \
-    widget/mapViewer/graphicsView/mapscene2d.h \
+    widget/mapViewer/graphicsView/mapView.h \
+    widget/mapViewer/graphicsView/mapscene.h \
     widget/mapViewer/mapviewwidget.h \
     widget/menuBar/TabWidget/pixmapitem.h \
     widget/menuBar/TabWidget/tabwidget.h \

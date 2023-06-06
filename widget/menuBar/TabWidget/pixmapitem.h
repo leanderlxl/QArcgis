@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include<QGraphicsPixmapItem>
+#include<QObject>
 class pixmapItem:public QGraphicsPixmapItem
 {
 public:
@@ -16,8 +17,8 @@ public:
 private:
     bool isHoverd = false;
     QGraphicsRectItem* hoverMask;
-signals:
-
+//signals:
+//    void clicked( );
 };
 
 #endif // PIXMAPITEM_H

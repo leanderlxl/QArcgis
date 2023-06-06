@@ -2,7 +2,11 @@
 #define MAPVIEWWIDGET_H
 
 #include <QWidget>
-
+#include"graphicsView/mapView.h"
+#include"../../core/AbstractShapeType.h"
+#include"../../core/layer.h"
+#include"../../core/shapes.h"
+#include"graphicsView/mapscene.h"
 class mapViewWidget : public QWidget
 {
     Q_OBJECT
@@ -11,6 +15,17 @@ public:
 
 signals:
 
+private:
+    void initMapView();
+private:
+    mapScene2D* scene = nullptr;
+    mapView2D* view = nullptr;
+    layerManager* layers;
+    QVector<mapObject*> mapObjectBuffer;
+
+public slots:
+    void select();
+//    void createLayer();
 };
 
 #endif // MAPVIEWWIDGET_H

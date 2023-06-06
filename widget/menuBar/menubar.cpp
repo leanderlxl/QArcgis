@@ -3,7 +3,7 @@
 menuBar* menuBar::singleton = nullptr ;
 menuBar::menuBar(QWidget *parent):QTabWidget(parent)
 {
-    qDebug()<<"widget/menubar/ menuBar::menuBar constructed";
+    //qDebug()<<"widget/menubar/ menuBar::menuBar constructed";
 }
 menuBar::~menuBar()
 {
