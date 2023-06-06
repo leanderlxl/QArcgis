@@ -3,6 +3,8 @@
 buildMenu::buildMenu(menuBar* menu)
 {
     this->ptr_menu = menu;
+//    menu->setStyleSheet("background-color: gray;");
+
 }
 void buildMenu::makeTabMap()
 {

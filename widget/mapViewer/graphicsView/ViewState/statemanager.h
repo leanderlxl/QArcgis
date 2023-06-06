@@ -1,6 +1,5 @@
 #ifndef STATEMANAGER_H
 #define STATEMANAGER_H
-class mapView2D;
 #include"selectstate.h"
 class SelectionStateManager
 {
@@ -34,7 +33,7 @@ public:
     {
         if (currentState)
         {
-            currentState->mousePressEvent(view, event);
+            QList<std::unique_ptr<mapObject>> list = currentState->mousePressEvent(view, event);
         }
     }
 

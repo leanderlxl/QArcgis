@@ -26,5 +26,6 @@ void mapViewWidget::initMapView()
 }
 void mapViewWidget::select()
 {
-
+    qDebug()<<"select one";
+    view->setSelectingMode(new SelectOne());
 }

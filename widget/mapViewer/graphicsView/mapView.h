@@ -10,6 +10,9 @@ class mapView2D:public QGraphicsView
 {
 public:
     mapView2D(mapScene2D * scene,QWidget *parent = nullptr);
+
+    void setSelectingMode(SelectionState* select);
+
 protected:
     void wheelEvent(QWheelEvent *event);
 
@@ -17,12 +20,15 @@ protected:
 
     void mouseMoveEvent(QMouseEvent *event);
 
-    void mouseReleaseEvent(QMouseEvent *event) ;
+    void mouseReleaseEvent(QMouseEvent *event);
+
+
 private:
     void setRequiredSettings();
 private:
     bool isPanning;  // 是否正在平移
     QPoint lastPos;  // 上次鼠标位置
     SelectionStateManager* selection;
+    bool isSelecting;
 };
 #endif // MAPSCENE2D_H

@@ -22,6 +22,8 @@ SOURCES += \
     core/shapes.cpp \
     main.cpp \
     widget/Client.cpp \
+    widget/contentBar/contentbar.cpp \
+    widget/contentBar/mytreewidget.cpp \
     widget/mapViewer/graphicsView/ViewState/selectstate.cpp \
     widget/mapViewer/graphicsView/ViewState/statemanager.cpp \
     widget/mapViewer/graphicsView/mapView.cpp \
@@ -39,6 +41,8 @@ HEADERS += \
     core/layer.h \
     core/shapes.h \
     widget/Client.h \
+    widget/contentBar/contentbar.h \
+    widget/contentBar/mytreewidget.h \
     widget/mapViewer/graphicsView/ViewState/selectstate.h \
     widget/mapViewer/graphicsView/ViewState/statemanager.h \
     widget/mapViewer/graphicsView/mapView.h \

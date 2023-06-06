@@ -7,6 +7,9 @@
 #include"../../core/layer.h"
 #include"../../core/shapes.h"
 #include"graphicsView/mapscene.h"
+
+#include"graphicsView/ViewState/selectstate.h"
+
 class mapViewWidget : public QWidget
 {
     Q_OBJECT

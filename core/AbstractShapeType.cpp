@@ -6,8 +6,6 @@ mapObject::mapObject()
 {
 
 }
-
-
 void mapObject::setTopLeftPos(QPointF position)
 {
     topLeftPos = position;

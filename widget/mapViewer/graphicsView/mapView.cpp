@@ -4,12 +4,17 @@
 mapView2D::mapView2D(mapScene2D *scene, QWidget *parent):QGraphicsView(scene,parent)
 {
     selection = new SelectionStateManager();
-//    this->setCursor(Qt::PointingHandCursor); // 设置为手型形态
 }
 
 void mapView2D::setRequiredSettings()
 {
 
+}
+void mapView2D::setSelectingMode(SelectionState* select)
+{
+   this->isSelecting = true;
+   this->setCursor(Qt::PointingHandCursor); // 设置为手型形态
+   selection->setState(select);
 }
 void mapView2D::wheelEvent(QWheelEvent *event)
 {
@@ -32,15 +37,32 @@ void mapView2D::wheelEvent(QWheelEvent *event)
 void mapView2D::mousePressEvent(QMouseEvent *event)
 {
     QGraphicsView::mousePressEvent(event);
+    if(isSelecting)
+    {
+        selection->mousePressEvent(this,event);
+    }
 }
 
 void mapView2D::mouseMoveEvent(QMouseEvent *event)
 {
 
     QGraphicsView::mouseMoveEvent(event);
+    if(isSelecting)
+    {
+        selection->mouseMoveEvent(this,event);
+    }
 }
 
 void mapView2D::mouseReleaseEvent(QMouseEvent *event)
 {
     QGraphicsView::mouseReleaseEvent(event);
+    //if release , all events stop
+    if(isSelecting)
+    {
+        isSelecting = false;
+        selection->mouseReleaseEvent(this,event);
+    }
+
+    this->setCursor(Qt::ArrowCursor);
+
 }

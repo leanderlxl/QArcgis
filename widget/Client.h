@@ -13,6 +13,8 @@
 
 //mapViewer
 #include"mapViewer/mapviewwidget.h"
+
+#include"contentBar/contentbar.h"
 class Client : public QWidget
 {
     Q_OBJECT
@@ -26,5 +28,6 @@ private:
     menuBar* menu;
     buildMenu *builder_menu;
     mapViewWidget* map;
+    contentBar* cont;
 };
 #endif // WIDGET_H21
