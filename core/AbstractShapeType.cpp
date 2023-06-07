@@ -4,36 +4,22 @@
 
 mapObject::mapObject()
 {
+    rotate = 0;
+    opacity = 0;
+    isVisible = 1;
+    isSelected  = 0;
 
+    fillColor = Qt::black;
+
+    borderStyle = Qt::SolidLine;
+    borderColor = Qt::black;
+    borderWidth = 2;
 }
-void mapObject::setTopLeftPos(QPointF position)
-{
-    topLeftPos = position;
-}
+
 
 void mapObject::editData(QMap<Point, int> data)
 {
     // Edit the data implementation
-}
-
-void mapObject::setVisible(bool visibility)
-{
-    visible = visibility;
-}
-
-void mapObject::setSelected(bool selection)
-{
-    selected = selection;
-}
-
-void mapObject::scale(qreal scaleFactor)
-{
-    scaleValue = scaleFactor;
-}
-
-void mapObject::Rotate(qreal angle)
-{
-    rotationAngle = angle;
 }
 
 QVector<double> mapObject::getZ()
@@ -60,22 +46,73 @@ QVector<QMap<double, int>> mapObject::setM()
     return mData;
 }
 
-void mapObject::setBrushStyle(QBrush brush, QBrush style)
+
+void mapObject::Rotate(qreal angle)
 {
-    fillBrush = brush;
-    //fillStyle = style;
+    this->rotate = angle;
+    update();
 }
 
-void mapObject::setFillStyle(QColor color, Qt::BrushStyle style)
+
+void mapObject::scale(qreal scaleFactor)
+{
+    this->m_scale = scaleFactor;
+    update();
+}
+
+
+void mapObject::Visible(bool visibility)
+{
+    this->isVisible = visibility;
+    update();
+}
+
+
+void mapObject::Selected(bool selection)
+{
+    this->isSelected = selection;
+    update();
+}
+
+
+void mapObject::Opacity(qreal opacity)
+{
+    this->opacity = opacity;
+    update();
+}
+
+
+void mapObject::FillStyle(QColor color, Qt::BrushStyle style)
 {
     fillColor = color;
     fillStyle = style;
+    update();
 }
 
-void mapObject::setBorderStyle(QColor color, Qt::PenStyle style, int width)
+
+
+void mapObject::BorderStyle(QColor color, Qt::PenStyle style, int width)
 {
-    penColor = color;
-    penStyle = style;
-    penWidth = width;
+    this->borderColor = color;
+    this->borderStyle = style;
+    this->borderWidth = width;
+    update();
 }
+void mapObject::initPainter(QPainter *painter)
+{
 
+    QGraphicsItem::setScale(this->m_scale);
+    QGraphicsItem::setRotation(this->rotate);
+    QGraphicsItem::setOpacity(this->opacity);
+
+    if(isSelected)
+    {
+        borderColor = Qt::blue;
+    }
+
+    QBrush brush(fillColor);
+    painter->setBrush(brush);
+//    painter->setBrush(fillStyle);
+
+    painter->setPen(QPen(borderColor, borderWidth, borderStyle));
+}

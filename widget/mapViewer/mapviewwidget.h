@@ -2,13 +2,15 @@
 #define MAPVIEWWIDGET_H
 
 #include <QWidget>
-#include"graphicsView/mapView.h"
-#include"../../core/AbstractShapeType.h"
-#include"../../core/layer.h"
-#include"../../core/shapes.h"
-#include"graphicsView/mapscene.h"
 
+
+#include"graphicsView/mapView.h"
+#include"graphicsView/mapscene.h"
 #include"graphicsView/ViewState/selectstate.h"
+
+#include"../../core/AbstractShapeType.h"
+
+
 
 class mapViewWidget : public QWidget
 {
@@ -23,7 +25,6 @@ private:
 private:
     mapScene2D* scene = nullptr;
     mapView2D* view = nullptr;
-    layerManager* layers;
     QVector<mapObject*> mapObjectBuffer;
 
 public slots:

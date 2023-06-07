@@ -19,43 +19,58 @@ enum layerType
     null
 };
 }
+
 class Point
 {
 public:
+    //delete the default constructor would cause error
+    //but i dont know why
     Point() = default;
-    Point(qreal x,qreal y);
-public:
-    double length(){ return 0;}
-    double area(){ return 0;}
+    Point(qreal x,qreal y)
+    {
+        this->x = x;
+        this->y = y;
+    }
+    QVector<double> getPos()
+    {
+        QVector<double> pos;
+        pos.push_back(x);
+        pos.push_back(y);
+        return pos;
+    }
+    QVector<double> setPos(qreal x,qreal y)
+    {
+            this->x = x;
+            this->y = y;
+    }
+    void setScreenPos(QPointF pos)
+    {
+        this->pos = pos;
+    }
+    QPointF getScreenPos()
+    {
+        return pos;
+    }
 private:
     qreal x;
     qreal y;
+    QPointF pos;
 };
-
 //abstract type of all shapes
 class mapObject:public QGraphicsItem
 {
 public:
     mapObject();
 public:
-    // interface for change of mapobjects
+    // interface
     virtual double area() = 0;
 
     virtual double length() = 0;
 
-    void setTopLeftPos(QPointF);
-
-    //when index is -1 pushBack ,when index outof range do nothing please avoid
-    //inserting data in the middle of the container
+    //when index is -1 pushBack ,when index outof range
+    //do nothing please
+    //avoid inserting data in the middle of the container
     void editData(QMap<Point,int>);
-
-    void setVisible(bool);
-
-    void setSelected(bool);
-
-    void scale(qreal);
-
-    void Rotate(qreal);
 
     QVector<double> getZ();
 
@@ -67,43 +82,65 @@ public:
     //when a new  M is inserted ,there mush be a new point
     QVector<QMap<double,int>> setM();
 
-    void setBrushStyle(QBrush,QBrush);
 
-    void setFillStyle(QColor,Qt::BrushStyle);
-
-    void setBorderStyle(QColor,Qt::PenStyle,int);
-
-    //QgraphicsItem has declare these functions to abstract virtual function
-    //please override it in subClass
+    //pure virtual function that should be overrideed
 
     //QRectF boundingRect();
 
     //virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
 
+    //style releated
+
+    void scale(qreal);
+
+    void Rotate(qreal);
+
+    void Visible(bool);
+
+    void Selected(bool);
+
+    void Opacity(qreal);
+
+    void FillStyle(QColor,Qt::BrushStyle);
+
+    void BorderStyle(QColor,Qt::PenStyle,int);
+
 protected:
-    QVector<Point> points;
     int objectId;
-    QColor fillColor;
-    Qt::BrushStyle fillStyle;
-    qreal opacity;
-    int penWidth;
-    Qt::PenStyle penStyle;
-    QColor penColor;
-    QBrush penBrush;
-    QBrush fillBrush;
-    bool selected;
-    bool visible;
-    qreal  scaleValue;
-    qreal rotationAngle;
-    QPointF   topLeftPos;
+    int numPoints;
+
+    QVector<Point> box;
+    QVector<Point> points;
+
+
+
     bool isZ;
-    bool isM;
-    QVector<double>    ZRange;
-    QRectF box;
+    QVector<double>  ZRange;
     QVector<double>  Zarray;
+
+    bool isM;
     QVector<double>  MRange;
     QVector<double>  Marray;
+
+
+    //    style
+    //the first is scale the second is rotate the third is opacity
+    qreal m_scale,rotate,opacity;
+
+    bool isVisible,isSelected;
+
+    //fillcolor for fill, borderColor for setting pen color
+    QColor fillColor,borderColor;
+
+    Qt::BrushStyle fillStyle;
+    Qt::PenStyle borderStyle;
+
+    int borderWidth;
+
+    //templates for draw shapes
+    void initPainter(QPainter *painter);
+    virtual void drawShape(QPainter *painter) = 0;
 };
 
 

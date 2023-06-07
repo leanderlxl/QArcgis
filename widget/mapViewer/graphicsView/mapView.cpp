@@ -4,6 +4,7 @@
 mapView2D::mapView2D(mapScene2D *scene, QWidget *parent):QGraphicsView(scene,parent)
 {
     selection = new SelectionStateManager();
+    layers = layerManager::makeLayerManager();
 }
 
 void mapView2D::setRequiredSettings()

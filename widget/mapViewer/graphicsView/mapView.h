@@ -6,6 +6,8 @@
 #include<QWheelEvent>
 #include"mapscene.h"
 #include"ViewState/statemanager.h"
+#include"../../../core/layer.h"
+
 class mapView2D:public QGraphicsView
 {
 public:
@@ -22,7 +24,6 @@ protected:
 
     void mouseReleaseEvent(QMouseEvent *event);
 
-
 private:
     void setRequiredSettings();
 private:
@@ -30,5 +31,6 @@ private:
     QPoint lastPos;  // 上次鼠标位置
     SelectionStateManager* selection;
     bool isSelecting;
+    layerManager* layers;
 };
 #endif // MAPSCENE2D_H

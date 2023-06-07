@@ -17,6 +17,7 @@ public:
 
     void addData(QVector<QGraphicsPixmapItem*> container,int z = -1)
     {
+        Q_UNUSED(z);
         this->container = container;
     }
     void addItem(QGraphicsPixmapItem* pix)
@@ -89,6 +90,7 @@ public:
 
     void addBaseMap(QVector<QGraphicsPixmapItem*> container,int z = -1)
     {
+        Q_UNUSED(z);
         this->basemap->removeAll();
         this->basemap->addData(container,-1);
     }

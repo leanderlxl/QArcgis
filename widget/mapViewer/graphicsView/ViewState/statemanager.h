@@ -33,7 +33,7 @@ public:
     {
         if (currentState)
         {
-            QList<std::unique_ptr<mapObject>> list = currentState->mousePressEvent(view, event);
+            QList<mapObject*> list = currentState->mousePressEvent(view, event);
         }
     }
 

@@ -14,6 +14,7 @@
 //mapViewer
 #include"mapViewer/mapviewwidget.h"
 
+//contentBar
 #include"contentBar/contentbar.h"
 class Client : public QWidget
 {
