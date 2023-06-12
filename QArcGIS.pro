@@ -18,17 +18,26 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     ThreadPool/baseMapTasks/wmts_map.cpp \
     core/AbstractShapeType.cpp \
+    core/ShapeState/EditShapeState.cpp \
+    core/ShapeState/shapeeditor.cpp \
     core/layer.cpp \
+    core/layermanager.cpp \
     core/shapes.cpp \
     main.cpp \
     widget/Client.cpp \
+    widget/Edit/createfeatures.cpp \
+    widget/Edit/makelayer.cpp \
     widget/contentBar/contentbar.cpp \
     widget/contentBar/mytreewidget.cpp \
+    widget/mapViewer/graphicsView/Editor_bar/decorator.cpp \
+    widget/mapViewer/graphicsView/Editor_bar/editor.cpp \
+    widget/mapViewer/graphicsView/Editor_bar/editorpixmapitem.cpp \
     widget/mapViewer/graphicsView/ViewState/selectstate.cpp \
     widget/mapViewer/graphicsView/ViewState/statemanager.cpp \
     widget/mapViewer/graphicsView/mapView.cpp \
     widget/mapViewer/graphicsView/mapscene.cpp \
     widget/mapViewer/mapviewwidget.cpp \
+    widget/mapViewer/projector/projector.cpp \
     widget/menuBar/TabWidget/pixmapitem.cpp \
     widget/menuBar/TabWidget/tabwidget.cpp \
     widget/menuBar/buildmenu.cpp \
@@ -38,16 +47,25 @@ SOURCES += \
 HEADERS += \
     ThreadPool/baseMapTasks/wmts_map.h \
     core/AbstractShapeType.h \
+    core/ShapeState/EditShapeState.h \
+    core/ShapeState/shapeeditor.h \
     core/layer.h \
+    core/layermanager.h \
     core/shapes.h \
     widget/Client.h \
+    widget/Edit/createfeatures.h \
+    widget/Edit/makelayer.h \
     widget/contentBar/contentbar.h \
     widget/contentBar/mytreewidget.h \
+    widget/mapViewer/graphicsView/Editor_bar/decorator.h \
+    widget/mapViewer/graphicsView/Editor_bar/editor.h \
+    widget/mapViewer/graphicsView/Editor_bar/editorpixmapitem.h \
     widget/mapViewer/graphicsView/ViewState/selectstate.h \
     widget/mapViewer/graphicsView/ViewState/statemanager.h \
     widget/mapViewer/graphicsView/mapView.h \
     widget/mapViewer/graphicsView/mapscene.h \
     widget/mapViewer/mapviewwidget.h \
+    widget/mapViewer/projector/projector.h \
     widget/menuBar/TabWidget/pixmapitem.h \
     widget/menuBar/TabWidget/tabwidget.h \
     widget/menuBar/buildmenu.h \
@@ -61,10 +79,13 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 INCLUDEPATH += D:/QtProject/QArcGIS/lib/gdal/include
 LIBS += -LD:/QtProject/QArcGIS/lib/gdal/lib -lgdal_i
 
-
-
 RESOURCES += \
+    widget/mapViewer/View.qrc \
     widget/menuBar/TabWidget/menuBar.qrc
+
+FORMS += \
+    ui/Layer/createFeatures.ui \
+    ui/Layer/form.ui
 
 
 

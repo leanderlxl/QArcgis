@@ -16,6 +16,7 @@ public:
 
 
     void contextMenuEvent(QContextMenuEvent* event) override ;
+
     void addTopLevelItem(QTreeWidgetItem* ite) {
       QTreeWidget::addTopLevelItem(ite);
     }

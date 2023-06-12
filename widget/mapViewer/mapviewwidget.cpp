@@ -12,22 +12,17 @@ void mapViewWidget::initMapView()
     //binding view and scnene
     scene = new mapScene2D();
     view = new mapView2D(scene,this);
+
     view->setRenderHint(QPainter::Antialiasing);
-//    view->setDragMode(QGraphicsView::ScrollHandDrag);
-    view->setGeometry(0,0,this->width(),this->height()-5);
 
-    // Create a rectangle
-    QGraphicsItem* rectItem2 = new s_Point(0,0);
-    rectItem2->setPos(0,0); // Set the position of the rectangle
+    view->setGeometry(0,0,this->width()-5,this->height()-5);
+    scene->setSceneRect(view->rect());
 
-//     Add the rectangle to the scene
-    scene->addItem(rectItem2);
-//    add baseMap layers
 
 }
 
 void mapViewWidget::select()
 {
-//    qDebug()<<"select one";
+    //    qDebug()<<"select one";
     view->setSelectingMode(new SelectOne());
 }

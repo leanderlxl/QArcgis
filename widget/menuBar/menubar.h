@@ -1,9 +1,9 @@
 #ifndef MENUBAR_H
 #define MENUBAR_H
 
-#include <QWidget>
 #include<QTabWidget>
 #include<QString>
+namespace q_menu {
 class menuBar:public QTabWidget
 {
     Q_OBJECT
@@ -16,5 +16,5 @@ private:
     ~menuBar();
     static menuBar *singleton;
 };
-
+}
 #endif // MENUBAR_H

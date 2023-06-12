@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/pic">
+        <file>graphicsView/pictures/Cancel.png</file>
+        <file>graphicsView/pictures/DrawLine.png</file>
+        <file>graphicsView/pictures/EditPoint.png</file>
+        <file>graphicsView/pictures/Extent.png</file>
+        <file>graphicsView/pictures/Finish.png</file>
+        <file>graphicsView/pictures/NewPoint.png</file>
+        <file>graphicsView/pictures/Circle.png</file>
+        <file>graphicsView/pictures/Rectangle.png</file>
+    </qresource>
+</RCC>

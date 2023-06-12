@@ -25,6 +25,7 @@ class SelectOne:public SelectionState
         QList<mapObject*> tmp;
         return tmp;
     }
+
     QList<mapObject*> mouseReleaseEvent(mapView2D* view, QMouseEvent* event)
     {
         Q_UNUSED(view);

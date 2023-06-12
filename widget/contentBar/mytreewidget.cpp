@@ -5,7 +5,7 @@ mytreewidget::mytreewidget(QWidget *parent):QTreeWidget(parent)
 
 }
 
-mytreewidget::mytreewidget(QWidget* parent, const QStringList& labels): QTreeWidget(parent){}
+mytreewidget::mytreewidget( QWidget* parent, const QStringList& labels): QTreeWidget(parent){}
 
 void mytreewidget::contextMenuEvent(QContextMenuEvent *event){
     QTreeWidgetItem* item = currentItem();

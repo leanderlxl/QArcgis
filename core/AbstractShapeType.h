@@ -6,6 +6,7 @@
 #include<QBrush>
 #include<QMap>
 #include<QPainter>
+
 //avoid polution to the outter namespace
 //the namespace of core including needed enumeration for this part
 namespace coreEnum {
@@ -26,6 +27,7 @@ public:
     //delete the default constructor would cause error
     //but i dont know why
     Point() = default;
+    Point(QPoint);
     Point(qreal x,qreal y)
     {
         this->x = x;
@@ -38,7 +40,7 @@ public:
         pos.push_back(y);
         return pos;
     }
-    QVector<double> setPos(qreal x,qreal y)
+    void setPos(qreal x,qreal y)
     {
             this->x = x;
             this->y = y;
@@ -47,10 +49,28 @@ public:
     {
         this->pos = pos;
     }
+    void setScreenX(int X)
+    {
+        this->pos.setX(X);
+    }
+    int getScreenX()
+    {
+        return this->pos.x();
+    }
+    void setScreenY(int Y)
+    {
+        this->pos.setY(Y);
+    }
+    int getScreenY()
+    {
+        return this->pos.y();
+    }
+
     QPointF getScreenPos()
     {
         return pos;
     }
+
 private:
     qreal x;
     qreal y;
@@ -71,6 +91,7 @@ public:
     //do nothing please
     //avoid inserting data in the middle of the container
     void editData(QMap<Point,int>);
+
 
     QVector<double> getZ();
 
@@ -106,6 +127,11 @@ public:
 
     void BorderStyle(QColor,Qt::PenStyle,int);
 
+    //templates for draw shapes
+    void initPainter(QPainter *painter);
+    virtual void drawShape(QPainter *painter) = 0;
+
+    void setObjectId(int);
 protected:
     int objectId;
     int numPoints;
@@ -137,10 +163,6 @@ protected:
     Qt::PenStyle borderStyle;
 
     int borderWidth;
-
-    //templates for draw shapes
-    void initPainter(QPainter *painter);
-    virtual void drawShape(QPainter *painter) = 0;
 };
 
 

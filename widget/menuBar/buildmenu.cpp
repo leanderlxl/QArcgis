@@ -1,5 +1,7 @@
 #include "buildmenu.h"
+#include"../Client.h"
 #include<QDebug>
+using namespace q_menu;
 buildMenu::buildMenu(menuBar* menu)
 {
     this->ptr_menu = menu;
@@ -22,19 +24,24 @@ void buildMenu::makeTabMap()
 
 void buildMenu::makeTabInsert()
 {
-    tabWidget* map = new tabWidget(this->ptr_menu);
+    tabWidget* Insert = new tabWidget(this->ptr_menu);
 
-    QPixmap    incon_BaseMap(":/pictures/baseMap.png");
-    pixmapItem *baseMap = new pixmapItem(incon_BaseMap);
-    map->addItem(baseMap);
+    QPixmap    AddpicPixmap(":/pictures/AddPic.png");
+    pixmapItem *AddPic = new pixmapItem(AddpicPixmap);
+    Insert->addItem(AddPic);
+    AddPic->setPos(2,2);
+
+
+    this->ptr_menu->addTabWidget(Insert,"Insert");
 }
 
 void buildMenu::makeTabAnalysis()
 {
 
 }
-
-void buildMenu::makeTabEdit(mapViewWidget* map)
+#include"../Edit/makelayer.h"
+#include"../Edit/createfeatures.h"
+void buildMenu::makeTabEdit(mapViewWidget* map,Client* mainwindow)
 {
     tabWidget* Edit = new tabWidget(this->ptr_menu);
 
@@ -44,13 +51,17 @@ void buildMenu::makeTabEdit(mapViewWidget* map)
     pixmapItem* createLayers = new pixmapItem(QPixmap(":/pictures/toolbox.png"));
     pixmapItem* select = new pixmapItem(QPixmap(":/pictures/select.png"));
     pixmapItem* edit_ = new pixmapItem(QPixmap(":/pictures/edit.png"));
-    pixmapItem* createFeatures = new pixmapItem(QPixmap(":/pictures/createFeatures.png"));
+    pixmapItem* makeFeatures = new pixmapItem(QPixmap(":/pictures/createFeatures.png"));
 
 
     Edit->addItem(createLayers);
     createLayers->setPos(2,0);
     rear = createLayers->pixmap().width()+2;
 
+    QWidget* tmp = new makeLayer();
+    tmp->hide();
+    createLayers->setShowWidget(tmp);
+    QObject::connect(createLayers,&pixmapItem::showWidget,mainwindow,&Client::showWindow);
 
     Edit->addItem(select);
     select->setPos(rear+2,0);
@@ -61,9 +72,13 @@ void buildMenu::makeTabEdit(mapViewWidget* map)
     edit_->setPos(rear+2,0);
     rear += edit_->pixmap().width()+2;
 
-    Edit->addItem(createFeatures);
-    createFeatures->setPos(rear+2,0);
-    rear += createFeatures->pixmap().width()+2;
+    Edit->addItem(makeFeatures);
+    makeFeatures->setPos(rear+2,0);
+    rear += makeFeatures->pixmap().width()+2;
+
+    QWidget* features = new createFeatures();
+    makeFeatures->setShowWidget(features);
+    QObject::connect(makeFeatures,&pixmapItem::showWidget,mainwindow,&Client::showWindow);
 
     this->ptr_menu->addTabWidget(Edit,"Edit");
 

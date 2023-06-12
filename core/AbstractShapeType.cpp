@@ -1,15 +1,19 @@
 #include "AbstractShapeType.h"
 #include<QDebug>
-
+Point::Point(QPoint p)
+{
+    this->pos = p;
+}
 
 mapObject::mapObject()
 {
     rotate = 0;
-    opacity = 0;
+    opacity = 1.0;
     isVisible = 1;
     isSelected  = 0;
 
-    fillColor = Qt::black;
+
+    fillColor = Qt::red;
 
     borderStyle = Qt::SolidLine;
     borderColor = Qt::black;
@@ -101,18 +105,23 @@ void mapObject::BorderStyle(QColor color, Qt::PenStyle style, int width)
 void mapObject::initPainter(QPainter *painter)
 {
 
-    QGraphicsItem::setScale(this->m_scale);
-    QGraphicsItem::setRotation(this->rotate);
-    QGraphicsItem::setOpacity(this->opacity);
+//    QGraphicsItem::setScale(this->m_scale);
+//    QGraphicsItem::setRotation(this->rotate);
+//    QGraphicsItem::setOpacity(this->opacity);
 
     if(isSelected)
     {
         borderColor = Qt::blue;
     }
 
-    QBrush brush(fillColor);
-    painter->setBrush(brush);
+//    QBrush brush(fillColor);
+    painter->setBrush(fillColor);
 //    painter->setBrush(fillStyle);
 
     painter->setPen(QPen(borderColor, borderWidth, borderStyle));
 }
+void mapObject::setObjectId(int i)
+{
+    this->objectId = i;
+}
+

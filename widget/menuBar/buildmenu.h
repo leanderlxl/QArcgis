@@ -9,21 +9,22 @@
 
 #include"../mapViewer/mapviewwidget.h"
 //This is my own advanced build pattern which omit the Director making it easier to read and understand
+class Client;
 
 class buildMenu
 {
 public:
     buildMenu() = default;
-    buildMenu(menuBar* menu);
+    buildMenu(q_menu::menuBar* menu);
 //private member function
 public:
     void makeTabMap();
     void makeTabInsert();
     void makeTabAnalysis();
-    void makeTabEdit(mapViewWidget*);
+    void makeTabEdit(mapViewWidget*,Client* c);
 //private members
 private:
-    menuBar * ptr_menu = nullptr;
+    q_menu::menuBar * ptr_menu = nullptr;
 };
 
 #endif // BUILDMENU_H

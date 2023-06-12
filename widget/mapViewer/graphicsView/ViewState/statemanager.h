@@ -29,15 +29,16 @@ public:
         currentState = state;
     }
 
-    void mousePressEvent(mapView2D* view, QMouseEvent* event)
+    QList<mapObject*> mousePressEvent(mapView2D* view, QMouseEvent* event)
     {
         if (currentState)
         {
             QList<mapObject*> list = currentState->mousePressEvent(view, event);
+            return list;
         }
     }
 
-    void mouseMoveEvent(mapView2D* view, QMouseEvent* event)
+    QList<mapObject*> mouseMoveEvent(mapView2D* view, QMouseEvent* event)
     {
 
         if (currentState)
@@ -46,7 +47,7 @@ public:
         }
     }
 
-    void mouseReleaseEvent(mapView2D* view, QMouseEvent* event)
+    QList<mapObject*> mouseReleaseEvent(mapView2D* view, QMouseEvent* event)
     {
         if (currentState)
         {
