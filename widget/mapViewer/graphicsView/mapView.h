@@ -4,12 +4,15 @@
 #include<QGraphicsScene>
 #include<QWidget>
 #include<QWheelEvent>
+
 #include"mapscene.h"
 #include"ViewState/statemanager.h"
 #include"../../../core/layer.h"
 #include"../../../core/layermanager.h"
 #include"../../../core/ShapeState/shapeeditor.h"
 #include"Editor_bar/editor.h"
+
+#include"../../menuBar/menuCommand/invoker.h"
 class mapView2D:public QGraphicsView
 {
     Q_OBJECT
@@ -34,8 +37,12 @@ private:
 
 public slots:
     void layerActive();
+
     void updateShapeEditorState(EditState*);
+
     void finishShapeEdit();
+
+    void invokeCmd(Command * cmd);
 private:
     bool isPanning;  // 是否正在平移
     QPoint lastPos;  // 上次鼠标位置
@@ -44,7 +51,9 @@ private:
     layerManager* layers;
     Layer* activingLayer;
     Editor* editor;
+    Invoker *invoker;
     ShapeEditor* shapeEditor;
+
 };
 
 

@@ -5,14 +5,16 @@
 #include<QGraphicsPixmapItem>
 #include<QObject>
 #include<QDebug>
+
+#include"../menuCommand/command.h"
 class pixmapItem: public QObject,public QGraphicsPixmapItem
 {
     Q_OBJECT
 public:
     pixmapItem() = default;
-    pixmapItem(const QPixmap &pixmap, QGraphicsItem *parent = nullptr);
+    pixmapItem(const QPixmap &pixmap, QGraphicsItem *parent = nullptr,Command* command = nullptr);
 
-    void setShowWidget(QWidget *widget);
+
 private:
 
     //overrride the hover event
@@ -22,10 +24,12 @@ private:
 private:
     bool isHoverd = false;
     QGraphicsRectItem* hoverMask;
-    QWidget *Widget;
+    Command* cmd;
+
 signals:
-    void clicked( );
-    void showWidget(QWidget* Widget);
+    void clicked();
+
+    void sendCommand(Command*);
 };
 
 #endif // PIXMAPITEM_H

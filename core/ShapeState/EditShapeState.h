@@ -1,6 +1,7 @@
 #ifndef EDITSTATE_H
 #define EDITSTATE_H
 #include<QMouseEvent>
+#include<QWheelEvent>
 #include<QGraphicsScene>
 #include"../shapes.h"
 #include"../layer.h"
@@ -11,6 +12,7 @@ public:
     virtual void mousePressevent(QMouseEvent*) = 0;
     virtual void mouseMoveEvent(QMouseEvent*) =0;
     virtual void mouseReleaseEvent(QMouseEvent*) =0;
+    virtual void mouseWheelEvent(QWheelEvent*) =0;
     virtual void mouseDoubleClickedEvent(QMouseEvent*) =0;
     void setEditLayer(Layer*);
     void setEditItem(mapObject*);
@@ -29,22 +31,35 @@ public:
     void mouseMoveEvent(QMouseEvent*){}
     void mouseReleaseEvent(QMouseEvent*){}
     void mouseDoubleClickedEvent(QMouseEvent*){}
+    void mouseWheelEvent(QWheelEvent*){}
 };
 
 class CreatePolyLineState:public EditState
 {
 public:
     CreatePolyLineState() {
-        this->line = nullptr;
+        line = new PolyLine();
+        this->Parts.push_back(0);
+
+
     }
 
     void mousePressevent(QMouseEvent*);
-    void mouseMoveEvent(QMouseEvent*){}
-    void mouseReleaseEvent(QMouseEvent*){}
+    void mouseMoveEvent(QMouseEvent*);
+    void mouseReleaseEvent(QMouseEvent*){
+
+    }
     void mouseDoubleClickedEvent(QMouseEvent*);
+    void mouseWheelEvent(QWheelEvent*){}
 
 private:
-    int start  =  0;
+    bool added = false;
+
+    bool shouldInsertVirtualPoint = true;
+    bool firstClickProcess = true;
+
+    bool clicked = false;
+
     QVector<QPoint> points;
     QVector<int> Parts;
     PolyLine *line;
@@ -53,68 +68,181 @@ private:
 class CreatePolygonState:public EditState
 {
 public:
-    CreatePolygonState() {}
+    CreatePolygonState()
+    {
+        this->polygon = new Polygon();
+        this->Parts.push_back(0);
+    }
 
     void mousePressevent(QMouseEvent*);
-    void mouseMoveEvent(QMouseEvent*){}
+    void mouseMoveEvent(QMouseEvent*);
     void mouseReleaseEvent(QMouseEvent*){}
     void mouseDoubleClickedEvent(QMouseEvent*);
+    void mouseWheelEvent(QWheelEvent*){}
 
 private:
-    int start  =  0;
+    bool added = false;
+
+    bool shouldInsertVirtualPoint = true;
+
+    bool firstClickProcess = true;
+    bool doubleClickProcess = false;
+
+    bool clickedTwice = false;
+
+
     QVector<QPoint> points;
     QVector<int> Parts;
-    Polygon *rect;
+    Polygon *polygon;
 
 };
 
 class CreateRectangleState:public EditState
 {
 public:
-    CreateRectangleState() {}
+    CreateRectangleState()
+    {
+        this->polygon = new Polygon();
+        this->parts.push_back(0);
+    }
     void mousePressevent(QMouseEvent*);
-    void mouseMoveEvent(QMouseEvent*){}
-    void mouseReleaseEvent(QMouseEvent*){}
-    void mouseDoubleClickedEvent(QMouseEvent*);
+    void mouseMoveEvent(QMouseEvent*);
+    void mouseReleaseEvent(QMouseEvent*){
+    }
+    void mouseDoubleClickedEvent(QMouseEvent*){}
+    void mouseWheelEvent(QWheelEvent*){}
 private:
-    bool shouldPress = true;
-    int start  =  0;
+    bool added = false;
+
+    bool firstClickProcess = true;
+    bool clicked = false;
+    bool shouldRemoveVirtualPoint = false;
+
     QVector<QPoint> points;
-    QVector<int> Parts;
-    Polygon *rect;
+    QVector<int> parts;
+    Polygon *polygon;
 };
 
 class CreateCircleState:public EditState
 {
 public:
-    CreateCircleState() {}
+    CreateCircleState()
+    {
+        this->polygon = new Polygon();
+        this->parts.push_back(0);
+    }
+
+    void mousePressevent(QMouseEvent*);
+    void mouseMoveEvent(QMouseEvent*);
+    void mouseReleaseEvent(QMouseEvent*){
+    }
+    void mouseDoubleClickedEvent(QMouseEvent*){}
+    void mouseWheelEvent(QWheelEvent*){}
+
+private:
+    bool added = false;
+
+    bool firstClickProcess = true;
+    bool clicked = false;
+    bool shouldRemoveVirtualPoint = false;
+
+    QPoint center;
+    double radius;
+
+    QVector<QPoint> points;
+    QVector<int> parts;
+    Polygon *polygon;
+};
+class CreateSectorState:public EditState
+{
+public:
+    CreateSectorState()
+    {
+
+        this->polygon = new Polygon();
+        this->parts.push_back(0);
+    }
+    void mousePressevent(QMouseEvent*);
+    void mouseMoveEvent(QMouseEvent*);
+    void mouseReleaseEvent(QMouseEvent*){
+    }
+    void mouseDoubleClickedEvent(QMouseEvent*){}
+    void mouseWheelEvent(QWheelEvent*){}
+private:
+    void calculateArc(QMouseEvent*);
+private:
+    bool added = false;
+
+    bool firstClickProcess = true;
+    bool secondClickProcess = false;
+
+    bool clicked = false;
+    bool shouldRemoveVirtualPoint = false;
+
+    QPoint center;
+    QPoint start;
+    double radius;
+
+    QVector<QPoint> points;
+    QVector<int> parts;
+    Polygon *polygon;
 };
 
-class EditMapObjectMoveState
+class EditMapObjectMoveState:public EditState
 {
 public:
     EditMapObjectMoveState() {}
+    void mousePressevent(QMouseEvent*);
+    void mouseMoveEvent(QMouseEvent*);
+    void mouseReleaseEvent(QMouseEvent*);
+    void mouseDoubleClickedEvent(QMouseEvent*){}
+    void mouseWheelEvent(QWheelEvent*){}
+private:
+    bool enableMove = false;
 };
-class EditMapObjectRotateState
+
+class EditMapObjectRotateState:public EditState
 {
 public:
     EditMapObjectRotateState() {}
+    void mousePressevent(QMouseEvent*);
+    void mouseMoveEvent(QMouseEvent*){}
+    void mouseReleaseEvent(QMouseEvent*){}
+    void mouseDoubleClickedEvent(QMouseEvent*){}
+    void mouseWheelEvent(QWheelEvent*);
+private:
+    bool enable = false;
 };
 
-class EditMapObjectScaleState
+class EditMapObjectScaleState:public EditState
 {
 public:
     EditMapObjectScaleState() {}
+    void mousePressevent(QMouseEvent*);
+    void mouseMoveEvent(QMouseEvent*){}
+    void mouseReleaseEvent(QMouseEvent*){}
+    void mouseDoubleClickedEvent(QMouseEvent*){}
+    void mouseWheelEvent(QWheelEvent*);
+private:
+    bool enable = false;
 };
 
-class EditMapObjectDelState
+class EditMapObjectDelState:public EditState
 {
-
+public:
+    EditMapObjectDelState() {}
+    void mousePressevent(QMouseEvent*);
+    void mouseMoveEvent(QMouseEvent*){}
+    void mouseReleaseEvent(QMouseEvent*){}
+    void mouseDoubleClickedEvent(QMouseEvent*){}
+    void mouseWheelEvent(QWheelEvent*){}
 };
 
 class reStyleMapObjectState
 {
 
 };
+
+
 
 #endif // EDITSTATE_H

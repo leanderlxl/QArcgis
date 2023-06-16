@@ -17,6 +17,8 @@ public:
     void mouseMoveEvent(QMouseEvent*);
     void mouseReleaseEvent(QMouseEvent*);
     void mouseDoubleClickedEvent(QMouseEvent*);
+
+    void mouseWheelEvent(QWheelEvent*);
 private:
     EditState* currentState;
 };

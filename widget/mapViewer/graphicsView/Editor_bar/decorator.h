@@ -1,7 +1,7 @@
 #ifndef DECORATOR_H
 #define DECORATOR_H
 #include<QVector>
-#include"../../../core/layer.h"
+#include"../../../../core/layer.h"
 #include"editorpixmapitem.h"
 class mapView2D;
 class Editor;
@@ -43,6 +43,15 @@ class editPolygon:public Decorator
 {
 public:
     editPolygon(Editor* edi):Decorator(edi)
+    {}
+    static Decorator* factory(Editor* edi);
+    void loadDecorator(mapView2D*);
+};
+
+class editShape:public Decorator
+{
+public:
+    editShape(Editor* edi):Decorator(edi)
     {}
     static Decorator* factory(Editor* edi);
     void loadDecorator(mapView2D*);

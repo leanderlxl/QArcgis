@@ -10,6 +10,7 @@ QList<mapObject*> SelectOne::mousePressEvent(mapView2D *view, QMouseEvent *event
 //        qDebug()<<"has one";
         mapObject *mapObj = dynamic_cast<mapObject*>(item);
         if (mapObj) {
+            qDebug()<<mapObj->pos();
             list.append(mapObj);
         }
     }

@@ -1,7 +1,7 @@
 #include "pixmapitem.h"
 #include<QDebug>
 #include <QGraphicsSceneMouseEvent>
-pixmapItem::pixmapItem(const QPixmap &pixmap, QGraphicsItem *parent):QGraphicsPixmapItem(pixmap)
+pixmapItem::pixmapItem(const QPixmap &pixmap, QGraphicsItem *parent,Command* command):QGraphicsPixmapItem(pixmap)
 {
     Q_UNUSED(parent);
     setAcceptHoverEvents(true);
@@ -9,11 +9,8 @@ pixmapItem::pixmapItem(const QPixmap &pixmap, QGraphicsItem *parent):QGraphicsPi
     hoverMask->setBrush(QColor(0, 0, 255, 30));
     hoverMask->setRect(this->boundingRect());
     hoverMask->hide();
-    Widget = nullptr;
-}
-void pixmapItem::setShowWidget(QWidget *widget)
-{
-    this->Widget = widget;
+
+    this->cmd = command;
 }
 void pixmapItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
@@ -35,10 +32,7 @@ void pixmapItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
     if(event->button() == Qt::LeftButton)
     {
         emit clicked();
-        if(Widget != nullptr)
-        {
-            emit showWidget(Widget);
-        }
+        if(this->cmd)emit sendCommand(cmd);
     }
 }
 

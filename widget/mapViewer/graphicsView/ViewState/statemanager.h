@@ -22,10 +22,6 @@ public:
 
     void setState(SelectionState* state)
     {
-        if (currentState)
-        {
-            delete currentState;
-        }
         currentState = state;
     }
 
@@ -44,6 +40,8 @@ public:
         if (currentState)
         {
             currentState->mouseMoveEvent(view, event);
+            QList<mapObject*> tmp;
+            return tmp;
         }
     }
 
@@ -52,6 +50,8 @@ public:
         if (currentState)
         {
             currentState->mouseReleaseEvent(view, event);
+            QList<mapObject*> tmp;
+            return tmp;
         }
     }
 };

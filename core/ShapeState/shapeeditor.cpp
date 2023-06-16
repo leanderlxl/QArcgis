@@ -27,4 +27,7 @@ void ShapeEditor::mouseDoubleClickedEvent(QMouseEvent* e)
 {
     if(currentState)currentState->mouseDoubleClickedEvent(e);
 }
-
+void ShapeEditor::mouseWheelEvent(QWheelEvent * e)
+{
+    if(currentState)currentState->mouseWheelEvent(e);
+}

@@ -1,8 +1,13 @@
 #include "Client.h"
+#include<QPushButton>
 Client::Client(QWidget *parent)
     : QMainWindow(parent)
 {
     initClientFacade();
+   this->invoker = new Invoker();
+    statusBar = new QStatusBar(this);
+    this->setStatusBar(statusBar);
+    statusBar->addWidget(new QPushButton("复位", statusBar));
 }
 void Client::initClientFacade()
 {
@@ -22,9 +27,9 @@ void Client::initClientFacade()
 
     builder_menu->makeTabMap();
 
-    builder_menu->makeTabEdit(map,this);
+    builder_menu->makeTabEdit(map->getMap(),this);
 
-    builder_menu->makeTabInsert();
+    builder_menu->makeTabInsert(map,this);
 
 //    builder_menu->makeTabAnalysis();
     delete builder_menu;
@@ -33,9 +38,15 @@ void Client::initClientFacade()
     cont = new contentBar(this);
     cont->setGeometry(0,151,228,574);
 }
-void Client::showWindow(QWidget *Window)
+void Client::invokeCmd(Command * cmd)
 {
-    Window->show();
+    this->invoker->setCommad(cmd);
+    this->invoker->invoke();
+}
+
+void Client::showWidget(QWidget * w)
+{
+    w->show();
 }
 Client::~Client()
 {

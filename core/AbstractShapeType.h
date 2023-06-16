@@ -87,6 +87,7 @@ public:
 
     virtual double length() = 0;
 
+
     //when index is -1 pushBack ,when index outof range
     //do nothing please
     //avoid inserting data in the middle of the container
@@ -103,6 +104,9 @@ public:
     //when a new  M is inserted ,there mush be a new point
     QVector<QMap<double,int>> setM();
 
+    void appendData();
+
+    void updatePoints(QVector<QPoint>);
 
     //pure virtual function that should be overrideed
 
@@ -115,7 +119,11 @@ public:
 
     void scale(qreal);
 
+    qreal getScale();
+
     void Rotate(qreal);
+
+    qreal getRotate();
 
     void Visible(bool);
 
@@ -123,12 +131,16 @@ public:
 
     void Opacity(qreal);
 
+    qreal getOpacity();
+
     void FillStyle(QColor,Qt::BrushStyle);
 
     void BorderStyle(QColor,Qt::PenStyle,int);
 
+    void setActive(bool active);
+
     //templates for draw shapes
-    void initPainter(QPainter *painter);
+    virtual void initPainter(QPainter *painter);
     virtual void drawShape(QPainter *painter) = 0;
 
     void setObjectId(int);

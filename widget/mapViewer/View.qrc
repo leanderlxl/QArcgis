@@ -8,5 +8,9 @@
         <file>graphicsView/pictures/NewPoint.png</file>
         <file>graphicsView/pictures/Circle.png</file>
         <file>graphicsView/pictures/Rectangle.png</file>
+        <file>graphicsView/pictures/Sector.png</file>
+        <file>graphicsView/pictures/move.png</file>
+        <file>graphicsView/pictures/rotate.png</file>
+        <file>graphicsView/pictures/scale.png</file>
     </qresource>
 </RCC>

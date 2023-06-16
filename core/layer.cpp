@@ -25,3 +25,43 @@ void Layer::removeData(mapObject * m)
         }
     }
 }
+void Layer::setBorderStyle(QColor borderColor,Qt::PenStyle boderStyle,int borderWidth)
+{
+
+    for(int i = 0;i<this->container.size();i++)
+    {
+        this->container[i]->BorderStyle(borderColor,boderStyle,borderWidth);
+    }
+}
+
+void Layer::setfillStyle(QColor fillColor,Qt::BrushStyle fillStyle)
+{
+    for(int i = 0;i<this->container.size();i++)
+    {
+        this->container[i]->FillStyle(fillColor,fillStyle);
+    }
+}
+
+void Layer::setScale(qreal s)
+{
+    for(int i = 0;i<this->container.size();i++)
+    {
+        this->container[i]->scale(s);
+    }
+}
+
+void Layer::setRotate(qreal s)
+{
+    for(int i = 0;i<this->container.size();i++)
+    {
+        this->container[i]->Rotate(s);
+    }
+}
+
+void Layer::setOpacity(qreal s)
+{
+    for(int i = 0;i<this->container.size();i++)
+    {
+        this->container[i]->Opacity(s);
+    }
+}

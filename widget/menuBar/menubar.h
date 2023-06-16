@@ -17,4 +17,5 @@ private:
     static menuBar *singleton;
 };
 }
+
 #endif // MENUBAR_H

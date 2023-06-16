@@ -9,16 +9,27 @@ public:
     static layerManager* makeLayerManager();
 
     QVector<mapObject*> getData();
+
     QVector<Layer*> getLayer();
 
     void removeLayer(Layer *layer);
+
     bool addLayer(Layer *layer);
 
     void setLayerOrder(QQueue<QString> layerOrder);
+
     void setLyrVisibility(Layer*,bool);
 
     void setActiveLayer(Layer* layer);
+
     void restoreActiveLayer();
+
+    void setActivingObject(mapObject*);
+
+    void restoreActivingObject();
+
+    mapObject* getActivingObject();
+
     Layer* getActiveLayer();
 
     ~layerManager()
@@ -33,6 +44,7 @@ private:
     QVector<Layer*> layers;
     static layerManager* singleton;
     Layer* activingLayer;
+    mapObject* activingObject;
 };
 
 #endif // LAYERMANAGER_H

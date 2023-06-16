@@ -3,7 +3,7 @@
 layerManager* layerManager::singleton = nullptr;
 layerManager::layerManager(QObject *parent):QObject(parent)
 {
-
+    this->activingObject = nullptr;
 }
 layerManager* layerManager::makeLayerManager()
 {
@@ -59,4 +59,24 @@ Layer* layerManager::getActiveLayer()
     }
     qDebug()<<"nullptr";
     return nullptr;
+}
+
+void layerManager::setActivingObject(mapObject * m)
+{
+    if(m != nullptr)
+    {
+        this->activingObject = m;
+        m->setActive(true);
+    }
+}
+
+mapObject* layerManager::getActivingObject()
+{
+    return this->activingObject;
+}
+
+void layerManager::restoreActivingObject()
+{
+    this->activingObject->setActive(false);
+    this->activingObject = nullptr;
 }

@@ -19,9 +19,9 @@ public:
 //private member function
 public:
     void makeTabMap();
-    void makeTabInsert();
+    void makeTabInsert(mapViewWidget*,Client* c);
     void makeTabAnalysis();
-    void makeTabEdit(mapViewWidget*,Client* c);
+    void makeTabEdit(mapView2D*,Client* c);
 //private members
 private:
     q_menu::menuBar * ptr_menu = nullptr;

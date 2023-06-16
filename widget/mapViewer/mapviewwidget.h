@@ -17,6 +17,8 @@ class mapViewWidget : public QWidget
     Q_OBJECT
 public:
     explicit mapViewWidget(QWidget *parent = nullptr);
+    mapView2D* getMap(){return view;}
+
 
 signals:
 
@@ -26,10 +28,9 @@ private:
     mapScene2D* scene = nullptr;
     mapView2D* view = nullptr;
     QVector<mapObject*> mapObjectBuffer;
-    Editor* editor;
 public slots:
-    void select();
-//    void createLayer();
+    void addPixmap();
+    void addText();
 };
 
 #endif // MAPVIEWWIDGET_H

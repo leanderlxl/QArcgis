@@ -36,6 +36,17 @@ public:
     void appendData(mapObject*);
 
     void removeData(mapObject*);
+
+    void setBorderStyle(QColor borderColor,Qt::PenStyle boderStyle,int borderWidth);
+
+    void setfillStyle(QColor fillColor,Qt::BrushStyle fillStyle);
+
+    void setScale(qreal);
+
+    void setRotate(qreal);
+
+    void setOpacity(qreal);
+
 private:
     int zValue = 0;
     QString layerName = "undefined";

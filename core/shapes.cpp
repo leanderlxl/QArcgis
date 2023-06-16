@@ -104,25 +104,26 @@ QRectF m_Point::boundingRect() const
     return QRectF(minX, minY, maxX - minX, maxY - minY);
 }
 
-
-PolyLine::PolyLine(int numPoints, QVector<Point> Points, int numParts, QVector<int> Parts, QVector<Point> BoundingBox):mapObject()
+PolyLine::PolyLine(int numPoints, QVector<Point> Points, int numParts, QVector<int> Parts, QVector<Point> BoundingBox)
 {
     this->points = Points;
     this->box = BoundingBox;
     this->numPoints = numPoints;
     this->numParts = numParts;
-    this->Parts = Parts;
+    this->parts = Parts;
 }
-PolyLine::PolyLine(QVector<QPoint> Points, QVector<int> Parts)
+
+PolyLine::PolyLine(QVector<QPoint> Points,  QVector<int> Parts)
 {
-    this->Parts = Parts;
-    this->numParts = Parts.size()/2;
+    this->parts = Parts;
+    this->numParts = Parts.size();
     this->numPoints = Points.size();
     for (int i = 0; i < Points.size(); ++i) {
         Point p(Points[i]);
         this->points.push_back(p);
     }
 }
+
 double PolyLine::area()
 {
     return 0;
@@ -134,11 +135,11 @@ double PolyLine::length()
     double totalLength = 0.0;
     for (int i = 0; i < numParts; i++)
     {
-        int startIndex = Parts[i];  // 当前线段起始点索引
+        int startIndex = parts[i];  // 当前线段起始点索引
         int endIndex;               // 当前线段结束点索引
 
         if (i < numParts - 1)
-            endIndex = Parts[i + 1] - 1;  // 下一个线段起始点索引的前一个索引
+            endIndex = parts[i + 1] - 1;  // 下一个线段起始点索引的前一个索引
         else
             endIndex = numPoints - 1;     // 最后一个线段的结束点索引
 
@@ -157,35 +158,82 @@ double PolyLine::length()
     return totalLength;
 }
 
+void PolyLine::updateData(QVector<QPoint> Points,  QVector<int> Parts)
+{
+    this->points.clear();
+    this->parts.clear();
+
+    this->numParts = Parts.size();
+    //    qDebug()<<"PolyLine::updateData numParts "<<this->numParts;
+
+    this->numPoints = Points.size();
+    //    qDebug()<<"PolyLine::updateData numPoints "<<this->numPoints;
+
+    for (int i = 0; i < Points.size(); ++i) {
+        Point p(Points[i]);
+        this->points.push_back(p);
+    }
+
+    this->parts = Parts;
+
+
+
+}
+
 void PolyLine::drawShape(QPainter* painter)
 {
-    // 绘制多段直线
-    for (int i = 0; i < Parts.size(); ++i) {
-        int start ,end;
-        if(i+1 == Parts.size())break;
-        start = Parts[i];
-        end = Parts[i+1];
-        qDebug()<<"start end "<<start<<" "<<end;
-        qDebug()<<"points statr "<<points[start].getScreenPos().x()<<" "<<points[start].getScreenPos().y();
-        qDebug()<<"points end "<<points[end].getScreenPos().x()<<" "<<points[start].getScreenPos().y();
-        painter->setBrush(Qt::NoBrush);
-        QPainterPath path(points[start].getScreenPos());
-        start++;
 
-        for (start; start <= end; ++start) {
-            path.lineTo(points[start].getScreenPos());
-        }
 
-        painter->drawPath(path);
+    for (int i = 0; i < this->parts.size(); ++i) {
+       int start = this->parts[i];
+
+
+       int end;
+       if(i+1 == this->parts.size())
+       {
+           end = this->points.size()-1;
+       }
+       else
+       {
+           //the end of next start is this line's end
+           end = this->parts[i+1] -1;
+       }
+
+       QPainterPath path(this->points[start].getScreenPos());
+
+       for (int var = start+1; var <= end; ++var) {
+           path.lineTo(this->points[var].getScreenPos());
+       }
+
+       painter->drawPath(path);
 
     }
+}
+
+void PolyLine::initPainter(QPainter *painter)
+{
+
+    //    QGraphicsItem::setScale(this->m_scale);
+    //    QGraphicsItem::setRotation(this->rotate);
+    //    QGraphicsItem::setOpacity(this->opacity);
+
+    if(isSelected)
+    {
+        borderColor = Qt::blue;
+    }
+
+    //    QBrush brush(fillColor);
+    //    painter->setBrush(fillColor);
+    //    painter->setBrush(fillStyle);
+
+    painter->setPen(QPen(borderColor, borderWidth, borderStyle));
 }
 
 void PolyLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
-    mapObject::initPainter(painter);
+    this->initPainter(painter);
     this->drawShape(painter);
 }
 
@@ -218,7 +266,7 @@ QRectF PolyLine::boundingRect() const
 }
 
 
-Polygon::Polygon(int numPoints, QVector<Point> Points, int numParts, QVector<int> Parts, QVector<Point> BoundingBox):mapObject()
+Polygon::Polygon(int numPoints, QVector<Point> Points, int numParts, QVector< int> Parts, QVector<Point> BoundingBox):mapObject()
 {
     this->points = Points;
     this->box = BoundingBox;
@@ -226,16 +274,18 @@ Polygon::Polygon(int numPoints, QVector<Point> Points, int numParts, QVector<int
     this->numParts = numParts;
     this->Parts = Parts;
 }
+
 Polygon::Polygon(QVector<QPoint> Points, QVector<int> Parts)
 {
     this->Parts = Parts;
-    this->numParts = Parts.size()/2;
+    this->numParts = Parts.size();
     this->numPoints = Points.size();
     for (int i = 0; i < Points.size(); ++i) {
         Point p(Points[i]);
         this->points.push_back(p);
     }
 }
+
 double Polygon::area()
 {
     // 计算多边形的面积
@@ -292,25 +342,59 @@ double Polygon::length()
     return totalLength;
 }
 
+void Polygon::updateData(QVector<QPoint> Points, QVector<int> Parts)
+{
+    this->points.clear();
+    this->Parts.clear();
+
+    this->numParts = Parts.size();
+    //    qDebug()<<"PolyLine::updateData numParts "<<this->numParts;
+
+    this->numPoints = Points.size();
+    //    qDebug()<<"PolyLine::updateData numPoints "<<this->numPoints;
+
+    for (int i = 0; i < Points.size(); ++i) {
+        Point p(Points[i]);
+        this->points.push_back(p);
+    }
+
+    this->Parts = Parts;
+
+
+
+}
+
 void Polygon::drawShape(QPainter *painter)
 {
-    // 绘制多边形
-    for (int i = 0; i < numParts; i++) {
-        int startIndex = Parts[i];  // 当前部分起始点索引
-        if(i+1 == numParts)break;
-        int endIndex = Parts[i+1];               // 当前部分结束点索引
-        ++i;
+
+    for (int i = 0; i < this->Parts.size(); ++i) {
+       int start = this->Parts[i];
 
 
-        // 绘制当前部分的多边形
-        QVector<QPointF> polygon;
-        for (int j = startIndex; j <= endIndex; j++) {
-            Point point = points[j];
-            polygon.push_back(point.getScreenPos());
-        }
+       int end;
+       if(i+1 == this->Parts.size())
+       {
+           end = this->points.size()-1;
+       }
+       else
+       {
+           end = this->Parts[i+1]-1;
+       }
 
-        painter->drawPolygon(polygon);
+       QPolygonF polygon;
+       for (; start <=end; ++start) {
+            polygon<<this->points[start].getScreenPos();
+       }
+
+       painter->drawPolygon(polygon);
+
+
+
     }
+
+
+
+
 }
 
 void Polygon::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)

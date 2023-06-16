@@ -20,15 +20,17 @@ SOURCES += \
     core/AbstractShapeType.cpp \
     core/ShapeState/EditShapeState.cpp \
     core/ShapeState/shapeeditor.cpp \
+    core/ersishape.cpp \
     core/layer.cpp \
     core/layermanager.cpp \
     core/shapes.cpp \
     main.cpp \
     widget/Client.cpp \
     widget/Edit/createfeatures.cpp \
+    widget/Edit/editmapobjectstyle.cpp \
     widget/Edit/makelayer.cpp \
     widget/contentBar/contentbar.cpp \
-    widget/contentBar/mytreewidget.cpp \
+    widget/contentBar/layers.cpp \
     widget/mapViewer/graphicsView/Editor_bar/decorator.cpp \
     widget/mapViewer/graphicsView/Editor_bar/editor.cpp \
     widget/mapViewer/graphicsView/Editor_bar/editorpixmapitem.cpp \
@@ -41,6 +43,8 @@ SOURCES += \
     widget/menuBar/TabWidget/pixmapitem.cpp \
     widget/menuBar/TabWidget/tabwidget.cpp \
     widget/menuBar/buildmenu.cpp \
+    widget/menuBar/menuCommand/command.cpp \
+    widget/menuBar/menuCommand/invoker.cpp \
     widget/menuBar/menubar.cpp
 
 
@@ -49,14 +53,16 @@ HEADERS += \
     core/AbstractShapeType.h \
     core/ShapeState/EditShapeState.h \
     core/ShapeState/shapeeditor.h \
+    core/ersishape.h \
     core/layer.h \
     core/layermanager.h \
     core/shapes.h \
     widget/Client.h \
     widget/Edit/createfeatures.h \
+    widget/Edit/editmapobjectstyle.h \
     widget/Edit/makelayer.h \
     widget/contentBar/contentbar.h \
-    widget/contentBar/mytreewidget.h \
+    widget/contentBar/layers.h \
     widget/mapViewer/graphicsView/Editor_bar/decorator.h \
     widget/mapViewer/graphicsView/Editor_bar/editor.h \
     widget/mapViewer/graphicsView/Editor_bar/editorpixmapitem.h \
@@ -69,6 +75,8 @@ HEADERS += \
     widget/menuBar/TabWidget/pixmapitem.h \
     widget/menuBar/TabWidget/tabwidget.h \
     widget/menuBar/buildmenu.h \
+    widget/menuBar/menuCommand/command.h \
+    widget/menuBar/menuCommand/invoker.h \
     widget/menuBar/menubar.h
 
 # Default rules for deployment.
@@ -76,14 +84,14 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-INCLUDEPATH += D:/QtProject/QArcGIS/lib/gdal/include
-LIBS += -LD:/QtProject/QArcGIS/lib/gdal/lib -lgdal_i
+
 
 RESOURCES += \
     widget/mapViewer/View.qrc \
     widget/menuBar/TabWidget/menuBar.qrc
 
 FORMS += \
+    ui/Layer/EditMapObjectStyle.ui \
     ui/Layer/createFeatures.ui \
     ui/Layer/form.ui
 

@@ -1,8 +1,11 @@
 #include "EditShapeState.h"
 #include<QDebug>
+#include<qmath.h>
+#include"../layermanager.h"
 EditState::EditState()
 {
 }
+
 void EditState::setEditItem(mapObject * item)
 {
     this->item = item;
@@ -25,158 +28,476 @@ void CreatePointState::mousePressevent(QMouseEvent *e)
     tmp->setObjectId(this->layer->getData().size());
     this->layer->appendData(tmp);
     this->scene->addItem(tmp);
+    this->scene->update();
 }
 
 void CreatePolyLineState::mousePressevent(QMouseEvent * e)
 {
-    if (!points.contains(e->pos())) {
-        points.push_back(e->pos());
+    //if first clicked dont pop back
+    if(firstClickProcess)
+    {
+        this->points.push_back(e->pos());
+    }
+    else
+    {
+        this->points.pop_back();
+        this->points.push_back(e->pos());
+    }
+    shouldInsertVirtualPoint = true;
+    clicked = true;
+
+
+    //    qDebug()<<"CreatePolyLineState::mousePressevent "<<"pressed";
+}
+
+void CreatePolyLineState::mouseMoveEvent(QMouseEvent * e)
+{
+    //    qDebug()<<e->pos().x()<<" "<<e->pos().y();
+    // update the rear of line
+    if(clicked)
+    {
+        //        qDebug()<<"moving...";
+        if(shouldInsertVirtualPoint)
+        {
+            this->points.push_back(e->pos());
+            shouldInsertVirtualPoint = false;
+        }
+        else
+        {
+            this->points.pop_back();
+            //            qDebug()<<"push new point";
+            this->points.push_back(e->pos());
+        }
+
+
+        this->line->updateData(this->points,this->Parts);
+
+        if(!added)
+        {
+            this->scene->addItem(line);
+            added = true;
+        }
+
+        this->scene->update();
     }
 }
 
 void CreatePolyLineState::mouseDoubleClickedEvent(QMouseEvent * e)
 {
+    //hanlde the must triggered press event
+    this->points.pop_back();
+    shouldInsertVirtualPoint = false;
 
-    Q_UNUSED(e);
 
-    this->Parts.push_back(start);
-    this->Parts.push_back(this->points.size()-1);
+    //    qDebug()<<"CreatePolyLineState::mouseDoubleClickedEvent "<<"mouseDoubleClicke";
 
-    start = this->points.size();
-    if(line)
-    {
-        this->scene->removeItem(line);
-        this->layer->removeData(line);
-    }
-    line = nullptr;
-    line = new PolyLine(this->points,this->Parts);
+    //pop the virtual point
+    this->points.pop_back();
+    this->points.push_back(e->pos());
 
-    this->scene->addItem(line);
-    this->layer->appendData(line);
+
+    this->line->updateData(this->points,this->Parts);
+
+    this->scene->update();
+
+    clicked = false;
+    firstClickProcess = true;
+
+    this->Parts.push_back(this->points.size());
+
 }
 
 void CreatePolygonState::mousePressevent(QMouseEvent * e)
 {
-    if (!points.contains(e->pos())) {
-        points.push_back(e->pos());
+    if(firstClickProcess)
+    {
+        this->points.push_back(e->pos());
+        firstClickProcess = false;
+        doubleClickProcess = true;
     }
+    else if(doubleClickProcess)
+    {
+        this->points.push_back(e->pos());
+        clickedTwice = true;
+        doubleClickProcess = false;
+        shouldInsertVirtualPoint = true;
+    }
+    else
+    {
+        this->points.pop_back();
+        this->points.push_back(e->pos());
+        shouldInsertVirtualPoint = true;
+    }
+
+
+}
+
+void CreatePolygonState::mouseMoveEvent(QMouseEvent * e)
+{
+    if(clickedTwice)
+    {
+        if(shouldInsertVirtualPoint)
+        {
+            this->points.push_back(e->pos());
+            shouldInsertVirtualPoint = false;
+        }
+        else
+        {
+            this->points.pop_back();
+            //            qDebug()<<"push new point";
+            this->points.push_back(e->pos());
+        }
+
+
+        this->polygon->updateData(this->points,this->Parts);
+
+        if(!added)
+        {
+            this->scene->addItem(polygon);
+            added = true;
+        }
+
+        this->scene->update();
+    }
+
+
 }
 
 void CreatePolygonState::mouseDoubleClickedEvent(QMouseEvent * e)
 {
-    qDebug()<<this->points.size();
+    //hanlde the must triggered press event
+    shouldInsertVirtualPoint = false;
+
     this->points.pop_back();
-    qDebug()<<this->points.size();
-
-    Q_UNUSED(e);
-    this->Parts.push_back(start);
+    this->points.push_back(e->pos());
 
 
+    this->polygon->updateData(this->points,this->Parts);
 
-    this->points.push_back(points[start]);
-    this->Parts.push_back(this->points.size()-1);
-    start = this->points.size();
-    if(rect)
-    {
-        this->scene->removeItem(rect);
-        this->layer->removeData(rect);
-    }
-    rect = nullptr;
-    rect = new Polygon(this->points,this->Parts);
+    this->scene->update();
 
-    this->scene->addItem(rect);
-    this->layer->appendData(rect);
+    clickedTwice = false;
+    firstClickProcess = true;
+
+    this->Parts.push_back(this->points.size());
 }
 
 void CreateRectangleState::mousePressevent(QMouseEvent* e)
 {
-    if (shouldPress)
+    if(firstClickProcess)
     {
-        points.push_back(e->pos());
+        this->points.push_back(e->pos());
+        clicked = true;
+        firstClickProcess = false;
     }
+    else
+    {
+        this->points.pop_back();this->points.pop_back();this->points.pop_back();
+        QPoint start = this->points[0];
+        int width = e->pos().x() - start.x();
+        int height = e->pos().y() - start.y();
+        this->points.push_back(QPoint(start.x()+width,start.y()));
+        this->points.push_back(e->pos());
+        this->points.push_back(QPoint(start.x(),start.y()+height));
+
+        this->polygon->updateData(this->points,this->parts);
+        this->scene->update();
+
+        firstClickProcess = true;
+        clicked = false;
+        shouldRemoveVirtualPoint = false;
+
+        this->parts.push_back(this->points.size());
+    }
+
 }
 
-void CreateRectangleState::mouseDoubleClickedEvent(QMouseEvent *e)
+void CreateRectangleState::mouseMoveEvent(QMouseEvent * e)
 {
-    Q_UNUSED(e);
-
-    if (points.size() < 2)
+    if(clicked)
     {
-        // 至少需要两个点才能绘制矩形
-        return;
+        QPoint start = this->points[0];
+
+        int width = e->pos().x() - start.x();
+        int height = e->pos().y() - start.y();
+        if(shouldRemoveVirtualPoint)
+        {
+            this->points.pop_back();this->points.pop_back();this->points.pop_back();
+        }
+
+        this->points.push_back(QPoint(start.x()+width,start.y()));
+        this->points.push_back(e->pos());
+        this->points.push_back(QPoint(start.x(),start.y()+height));
+        shouldRemoveVirtualPoint = true;
+
+        this->polygon->updateData(this->points,this->parts);
+
+        if(!added)
+        {
+            this->scene->addItem(polygon);
+            added = true;
+        }
+
+        this->scene->update();
+
+
     }
 
-    QPoint startPoint = points[0];
-    QPoint endPoint = points[1];
-
-    // 确保起始点和结束点的 x 坐标和 y 坐标都是矩形的左上角和右下角
-    int x = std::min(startPoint.x(), endPoint.x());
-    int y = std::min(startPoint.y(), endPoint.y());
-    int width = std::abs(startPoint.x() - endPoint.x());
-    int height = std::abs(startPoint.y() - endPoint.y());
-
-    // 清除之前的绘制数据
-    points.clear();
-    Parts.clear();
-
-    // 添加矩形的四个顶点
-    points.push_back(QPoint(x, y));
-    points.push_back(QPoint(x + width, y));
-    points.push_back(QPoint(x + width, y + height));
-    points.push_back(QPoint(x, y + height));
-    points.push_back(QPoint(x, y));  // 重复添加起始点，以闭合矩形
-
-    // 设置 Parts
-    Parts.push_back(0);
-    Parts.push_back(points.size() - 1);
-
-    // 移除之前的矩形对象
-    if (rect)
-    {
-
-        scene->removeItem(rect);
-        layer->removeData(rect);
-        delete rect;
-    }
-
-    // 创建新的矩形对象
-    rect = new Polygon(points, Parts);
-
-    // 添加矩形对象到场景和图层
-    scene->addItem(rect);
-    layer->appendData(rect);
 }
 
-//void CreateCircleState::mousePressevent(QMouseEvent * e)
-//{
+void CreateCircleState::mousePressevent(QMouseEvent * e)
+{
+    if(firstClickProcess)
+    {
+        center = e->pos();
+        clicked = true;
+        firstClickProcess = false;
+    }
+    else
+    {
+        this->points.clear();
+        int width = e->pos().x() - center.x();
+        int height = e->pos().y() - center.y();
 
-//}
+        radius = std::sqrt(width*width+height*height);
+        for (double angle = 0; angle < 360; angle += 2)
+        {
+            int x = center.x() + radius * qCos(qDegreesToRadians(angle));
+            int y = center.y() + radius * qSin(qDegreesToRadians(angle));
 
-//void CreateCircleState::mouseDoubleClickedEvent(QMouseEvent * e)
-//{
-//    Q_UNUSED(e);
+            this->points.push_back(QPoint(x,y));
+        }
+        this->polygon->updateData(this->points,this->parts);
+        this->scene->update();
 
-//    this->Parts.push_back(start);
-//    int width = e->pos().x() - points[start].x();
+        firstClickProcess = true;
+        clicked = false;
+        shouldRemoveVirtualPoint = false;
 
-//    int height = e->y() - points[start].y();
+        this->parts.push_back(this->points.size());
+    }
+}
 
-//    this->points.push_back(QPoint(points[start].x()+width,points[start].y()));
-//    this->points.push_back(QPoint(points[start].x()+width,points[start].y()+height));
-//    this->points.push_back(QPoint(points[start].x(),points[start].y()+height));
-//    this->points.push_back(points[start]);
+void CreateCircleState::mouseMoveEvent(QMouseEvent * e)
+{
 
-//    this->Parts.push_back(this->points.size()-1);
-//    start = this->points.size();
-//    if(rect)
-//    {
-//        this->scene->removeItem(rect);
-//        this->layer->removeData(rect);
-//    }
-//    rect = nullptr;
-//    rect = new Polygon(this->points,this->Parts);
+    if(clicked)
+    {
 
-//    this->scene->addItem(rect);
-//    this->layer->appendData(rect);
-//}
+
+        int width = e->pos().x() - center.x();
+        int height = e->pos().y() - center.y();
+
+        radius = std::sqrt(width*width+height*height);
+
+        if(shouldRemoveVirtualPoint)
+        {
+            this->points.clear();
+        }
+        for (double angle = 0; angle < 360; angle += 2)
+        {
+            int x = center.x() + radius * qCos(qDegreesToRadians(angle));
+            int y = center.y() + radius * qSin(qDegreesToRadians(angle));
+
+            this->points.push_back(QPoint(x,y));
+        }
+        shouldRemoveVirtualPoint = true;
+
+        this->polygon->updateData(this->points,this->parts);
+
+        if(!added)
+        {
+            this->scene->addItem(polygon);
+            added = true;
+        }
+
+        this->scene->update();
+    }
+}
+
+void CreateSectorState::mousePressevent(QMouseEvent * e)
+{
+    if(firstClickProcess)
+    {
+        center = e->pos();
+        firstClickProcess = false;
+        secondClickProcess = true;
+    }
+    else if(secondClickProcess)
+    {
+        start = e->pos();
+        secondClickProcess = false;
+        clicked = true;
+    }
+    else
+    {
+        this->points.clear();
+        this->calculateArc(e);
+        this->polygon->updateData(this->points,this->parts);
+        this->scene->update();
+
+        firstClickProcess = true;
+        clicked = false;
+        shouldRemoveVirtualPoint = false;
+
+        this->parts.push_back(this->points.size());
+    }
+}
+
+void CreateSectorState::calculateArc(QMouseEvent * e)
+{
+    QLineF startLine(center,start);
+    this->points.push_back(center);
+    this->points.push_back(start);
+
+    // 构造连接圆心和终点的直线
+    double dx = e->pos().x() - center.x();
+    double dy = e->pos().y() - center.y();
+    double lineLength = std::sqrt(dx * dx + dy * dy);
+    double unitX = dx / lineLength;
+    double unitY = dy / lineLength;
+
+    double endPointX = center.x() + radius * unitX;
+    double endPointY = center.y() + radius * unitY;
+
+    QPoint end(endPointX,endPointY);
+    QLineF endLine(center,end);
+
+    //    this->points.push_back(end);
+
+    // 计算圆弧的起始角度和结束角度
+    double startAngle = startLine.angle();
+    double endAngle = endLine.angle();
+
+
+    this->radius =  startLine.length();
+
+
+
+    if (startAngle < endAngle)
+    {
+        for (double angle = startAngle; angle <= endAngle; ++angle)
+        {
+            double x = center.x() + radius * qCos(qDegreesToRadians(angle));
+            double y = center.y() + radius * qSin(qDegreesToRadians(angle));
+            this->points.push_back(QPoint(x,y));
+        }
+    }
+    else
+    {
+        for (double angle = startAngle; angle >= endAngle; --angle)
+        {
+            double x = center.x() + radius * qCos(qDegreesToRadians(angle));
+            double y = center.y() + radius * qSin(qDegreesToRadians(angle));
+            this->points.push_back(QPoint(x,y));
+        }
+    }
+}
+
+void CreateSectorState::mouseMoveEvent(QMouseEvent * e)
+{
+    if(clicked)
+    {
+        if(shouldRemoveVirtualPoint)this->points.clear();
+        this->calculateArc(e);
+        shouldRemoveVirtualPoint = true;
+
+        this->polygon->updateData(this->points,this->parts);
+
+        if(!added)
+        {
+            this->scene->addItem(polygon);
+            added = true;
+        }
+
+        this->scene->update();
+
+
+    }
+}
+
+
+void EditMapObjectMoveState::mousePressevent(QMouseEvent * e)
+{
+    if(this->item->contains(e->pos()))
+    {
+        enableMove = true;
+    }
+}
+
+void EditMapObjectMoveState::mouseMoveEvent(QMouseEvent * e)
+{
+    if(enableMove)
+    {
+        this->item->setPos(e->pos());
+    }
+}
+
+void EditMapObjectMoveState::mouseReleaseEvent(QMouseEvent *)
+{
+    enableMove = false;
+}
+
+void EditMapObjectRotateState::mousePressevent(QMouseEvent * e)
+{
+    if(!enable)
+    {
+        enable = true;
+    }
+    else
+    {
+        enable = false;
+    }
+}
+
+void EditMapObjectRotateState::mouseWheelEvent(QWheelEvent * e)
+{
+    const qreal rotateFactor = 10;
+    if (e->delta() > 0) {
+        // 放大
+        this->item->Rotate(item->getRotate() + rotateFactor);
+    } else {
+        // 缩小
+        this->item->Rotate(item->getRotate() -rotateFactor);
+    }
+}
+
+void EditMapObjectScaleState::mousePressevent(QMouseEvent * e)
+{
+    if(!enable)
+    {
+        enable = true;
+    }
+    else
+    {
+        enable = false;
+    }
+}
+
+void EditMapObjectScaleState::mouseWheelEvent(QWheelEvent * e)
+{
+    const qreal scaleFactor = 1.15;
+    if (e->delta() > 0) {
+        // 放大
+        this->item->scale(item->getScale() *scaleFactor);
+    } else {
+        // 缩小
+        this->item->scale(item->getScale() /scaleFactor);
+    }
+}
+
+void EditMapObjectDelState::mousePressevent(QMouseEvent *e)
+{
+    if(this->item)
+    {
+        if(this->item->contains(e->pos()))
+        {
+            delete this->item;
+            layerManager* layers = layerManager::makeLayerManager();
+            layers->restoreActivingObject();
+        }
+    }
+}
+
+
 

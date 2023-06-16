@@ -14,6 +14,7 @@ Editor::Editor(coreEnum::layerType type,mapView2D *parent) : QDockWidget(parent)
     initFacade(parent);
 
 
+
 }
 void Editor::initFacade(mapView2D* parent)
 {

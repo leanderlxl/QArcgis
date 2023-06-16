@@ -9,11 +9,13 @@ mapObject::mapObject()
 {
     rotate = 0;
     opacity = 1.0;
-    isVisible = 1;
-    isSelected  = 0;
+    m_scale = 1;
+    isVisible = true;
+    isSelected  = false;
 
 
     fillColor = Qt::red;
+    fillStyle = Qt::HorPattern;
 
     borderStyle = Qt::SolidLine;
     borderColor = Qt::black;
@@ -105,18 +107,18 @@ void mapObject::BorderStyle(QColor color, Qt::PenStyle style, int width)
 void mapObject::initPainter(QPainter *painter)
 {
 
-//    QGraphicsItem::setScale(this->m_scale);
-//    QGraphicsItem::setRotation(this->rotate);
-//    QGraphicsItem::setOpacity(this->opacity);
+    QGraphicsItem::setScale(this->m_scale);
+    QGraphicsItem::setRotation(this->rotate);
+    QGraphicsItem::setOpacity(this->opacity);
 
     if(isSelected)
     {
         borderColor = Qt::blue;
     }
 
-//    QBrush brush(fillColor);
-    painter->setBrush(fillColor);
-//    painter->setBrush(fillStyle);
+    QBrush brush(fillColor,fillStyle);
+    painter->setBrush(brush);
+
 
     painter->setPen(QPen(borderColor, borderWidth, borderStyle));
 }
@@ -125,3 +127,34 @@ void mapObject::setObjectId(int i)
     this->objectId = i;
 }
 
+//this method will update all the points in the container
+void mapObject::updatePoints(QVector<QPoint> p)
+{
+    foreach (auto item, p) {
+        this->points.clear();
+        Point p(item);
+        this->points.push_back(p);
+    }
+}
+
+void mapObject::setActive(bool active)
+{
+    isSelected = active;
+    QGraphicsItem::setActive(active);
+    this->update();
+}
+
+qreal mapObject::getScale()
+{
+    return this->m_scale;
+}
+
+qreal mapObject::getRotate()
+{
+    return this->rotate;
+}
+
+qreal mapObject::getOpacity()
+{
+    return this->opacity;
+}

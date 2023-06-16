@@ -1,7 +1,7 @@
 #ifndef SELECTSTATE_H
 #define SELECTSTATE_H
 #include<QMouseEvent>
-#include"../../../core/shapes.h"
+#include"../../../../core/shapes.h"
 #include<memory>
 class mapView2D;
 
@@ -16,6 +16,10 @@ public:
 
 class SelectOne:public SelectionState
 {
+    ~SelectOne()
+    {
+
+    }
     QList<mapObject*> mousePressEvent(mapView2D* view, QMouseEvent* event);
 
     QList<mapObject*> mouseMoveEvent(mapView2D* view, QMouseEvent* event)

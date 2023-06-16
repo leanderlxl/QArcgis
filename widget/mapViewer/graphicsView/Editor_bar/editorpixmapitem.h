@@ -6,7 +6,7 @@
 #include<QGraphicsPixmapItem>
 #include<QObject>
 #include<QDebug>
-#include"../../../core/ShapeState/shapeeditor.h"
+#include"../../../../core/ShapeState/shapeeditor.h"
 class EditorPixmapItem: public QObject,public QGraphicsPixmapItem
 {
     Q_OBJECT

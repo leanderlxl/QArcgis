@@ -3,7 +3,7 @@
 #include<QObject>
 #include<QTreeWidget>
 #include<QVBoxLayout>
-#include"mytreewidget.h"
+#include"layers.h"
 class contentBar:public QWidget
 {
 public:
